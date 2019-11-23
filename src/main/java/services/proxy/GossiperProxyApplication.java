@@ -5,6 +5,7 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import persistence.DynamoDBManager;
+import util.ConnectionManager;
 
 
 public class GossiperProxyApplication extends Application<GossiperProxyConfiguration> {
@@ -36,9 +37,9 @@ public class GossiperProxyApplication extends Application<GossiperProxyConfigura
      //   environment.lifecycle().manage(myManagedObject);
 
 
-        DynamoDBManager dynamoDBManager = new DynamoDBManager();
+        ConnectionManager connectionManager = ConnectionManager.getInstance();
+        connectionManager.init();
 
-        dynamoDBManager.recover();
 
 
         environment.jersey().register(resource);

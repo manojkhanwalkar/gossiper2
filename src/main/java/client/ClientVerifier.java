@@ -2,14 +2,17 @@ package client;
 
 import data.*;
 import event.*;
+import util.Connection;
 import util.JSONUtil;
 
 import java.util.List;
 import java.util.UUID;
 
+import static util.ConnectionConstants.GossiperServiceUrl;
+
 public class ClientVerifier {
 
-    public static final String GossiperServiceUrl = "https://172.17.0.1:8480/";
+   // public static final String GossiperServiceUrl = "https://172.17.0.1:8480/";
 
 
     Connection connection;
@@ -203,13 +206,13 @@ public class ClientVerifier {
 
         ClientVerifier verifier = new ClientVerifier();
 
-      /*  for (int i=0;i<26;i++)
-            verifier.addUser(String.valueOf('A'+i));
+        for (int i=0;i<26;i++)
+            verifier.addUser(new User(String.valueOf('A'+i)));
 
         for (int i=0;i<26;i++)
-            verifier.deleteUser(String.valueOf('A'+i)); */
+            verifier.deleteUser(new User(String.valueOf('A'+i)));
 
-      User user1 = new User("User1191");
+ /*     User user1 = new User("User1191");
       User user2 = new User("User2191");
 
 
@@ -237,11 +240,11 @@ public class ClientVerifier {
         verifier.followUser(followUser);
 
 
-    /*    UnFollowUser unFollowUser = new UnFollowUser();
+        UnFollowUser unFollowUser = new UnFollowUser();
         unFollowUser.setSelf(user1);
         unFollowUser.setTarget(user2);
 
-        verifier.unFollowUser(unFollowUser); */
+        verifier.unFollowUser(unFollowUser);
 
 
 
@@ -253,15 +256,15 @@ public class ClientVerifier {
         });
 
 
-     /*   Subject subject2 = new Subject("politics");
+       Subject subject2 = new Subject("politics");
         verifier.deleteSubject(subject2);
-*/
 
 
 
-       /* DeletePost deletePost = new DeletePost();
+
+        DeletePost deletePost = new DeletePost();
         deletePost.setPost(post);
-        verifier.post(deletePost);*/
+        verifier.post(deletePost);
 
         Subjects subjects = verifier.getSubjects();
 
@@ -307,7 +310,7 @@ public class ClientVerifier {
 
 
 
-        //  verifier.UnFollowSubject(user1,subject);
+        //  verifier.UnFollowSubject(user1,subject);*/
 
 
 

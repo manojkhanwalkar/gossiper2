@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import data.*;
 import event.*;
 import processor.Dispatcher;
+import processor.ProxyDispatcher;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -22,7 +23,7 @@ public class GossiperProxyResource {
 
 
 
-    Dispatcher dispatcher = new Dispatcher();
+    ProxyDispatcher dispatcher = new ProxyDispatcher();
 
 
     public GossiperProxyResource(String template, String defaultName) {
@@ -266,19 +267,6 @@ public class GossiperProxyResource {
 
 
     }
-
-
- /*   @GET
-    @Timed
-    @Path("/claimkey")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String exchange() {
-
-
-        return rsaKeyHolder.getPublicKeyStr();
-
-    }*/
-
 
 
 
