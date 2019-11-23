@@ -83,7 +83,14 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
     public void dispatch(DeleteUser event)
     {
 
-       // userManager.deleteUser(event.getUser());
+        Connection connection = connectionManager.get(ConnectionManager.ServiceType.User,event.getUser().getId());
+
+        try {
+            String response = connection.send(JSONUtil.toJSON(event),"delete");
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void dispatch(FollowSubject event)
