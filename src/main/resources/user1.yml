@@ -6,7 +6,7 @@ server:
   #  hardNofileLimit: 1000
   applicationConnectors:
     - type: https
-      port: 8180
+      port: 8680
       keyStorePath: /home/manoj/IdeaProjects/securitytest/src/main/resources/mytestkey.jks
       keyStorePassword: password
     #this requires the alpn-boot library on the JVM's boot classpath
@@ -16,6 +16,6 @@ server:
     #  keyStorePassword: example
   adminConnectors:
     - type: https
-      port: 8181
+      port: 8681
       keyStorePath: /home/manoj/IdeaProjects/securitytest/src/main/resources/mytestkey.jks
       keyStorePassword: password
