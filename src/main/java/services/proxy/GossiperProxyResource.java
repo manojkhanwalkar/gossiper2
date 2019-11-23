@@ -1,4 +1,4 @@
-package services;
+package services.proxy;
 
 import com.codahale.metrics.annotation.Timed;
 import data.*;
@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
-public class GossiperResource {
+public class GossiperProxyResource {
     private final String template;
     private final String defaultName;
     private final AtomicLong counter;
@@ -25,7 +25,7 @@ public class GossiperResource {
     Dispatcher dispatcher = new Dispatcher();
 
 
-    public GossiperResource(String template, String defaultName) {
+    public GossiperProxyResource(String template, String defaultName) {
         this.template = template;
         this.defaultName = defaultName;
         this.counter = new AtomicLong();

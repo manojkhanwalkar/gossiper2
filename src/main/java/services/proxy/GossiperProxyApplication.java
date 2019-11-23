@@ -1,4 +1,4 @@
-package services;
+package services.proxy;
 
 
 import io.dropwizard.Application;
@@ -7,9 +7,9 @@ import io.dropwizard.setup.Environment;
 import persistence.DynamoDBManager;
 
 
-public class GossiperApplication extends Application<GossiperConfiguration> {
+public class GossiperProxyApplication extends Application<GossiperProxyConfiguration> {
     public static void main(String[] args) throws Exception {
-        new GossiperApplication().run(args);
+        new GossiperProxyApplication().run(args);
     }
 
     @Override
@@ -18,7 +18,7 @@ public class GossiperApplication extends Application<GossiperConfiguration> {
     }
 
     @Override
-    public void initialize(Bootstrap<GossiperConfiguration> bootstrap) {
+    public void initialize(Bootstrap<GossiperProxyConfiguration> bootstrap) {
 
     //    IDStatusPollManager.getInstance().start();
 
@@ -26,9 +26,9 @@ public class GossiperApplication extends Application<GossiperConfiguration> {
     }
 
     @Override
-    public void run(GossiperConfiguration configuration,
+    public void run(GossiperProxyConfiguration configuration,
                     Environment environment) {
-        final GossiperResource resource = new GossiperResource(
+        final GossiperProxyResource resource = new GossiperProxyResource(
                 configuration.getTemplate(),
                 configuration.getDefaultName()
         );
