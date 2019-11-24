@@ -228,9 +228,65 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
 
     public Posts dispatch(RetrievePost event)
     {
-        return null;
 
-        //     return userManager.getPostsForUser(event.getUser().getId());
+        try {
+            // find which instance has the user and get post ids from that instance .
+            // for each post ids - break into two lists for each post service
+            // for each post service get the posts associated with the ids. posts may have been deleted and so the list will be smaller
+            // combine the results into a single posts object and return it back
+
+            Connection connection = connectionManager.get(ConnectionManager.ServiceType.User,event.getUser().getId());
+
+            String response = connection.send(JSONUtil.toJSON(event),"retrieve");
+
+            PostIds postIds = (PostIds) JSONUtil.fromJSON(response,PostIds.class);
+
+            PostIds evenIds = new PostIds();
+            PostIds oddIds = new PostIds();
+
+            System.out.println(postIds);
+
+            // split into two parts
+
+            postIds.getPostIds().stream().forEach(id->{
+
+                if (id.hashCode()%2==0)
+                {
+                    evenIds.addPostId(id);
+                }
+                else
+                {
+                    oddIds.addPostId(id);
+                }
+            });
+
+
+            List<Connection> connections = connectionManager.get(ConnectionManager.ServiceType.Post);
+
+
+             response = connections.get(0).send(JSONUtil.toJSON(evenIds),"retrieve");
+
+             Posts evenPosts = (Posts)JSONUtil.fromJSON(response,Posts.class);
+
+
+            response = connections.get(1).send(JSONUtil.toJSON(oddIds),"retrieve");
+
+            Posts oddPosts = (Posts)JSONUtil.fromJSON(response,Posts.class);
+
+
+            Posts posts = Posts.combine(evenPosts,oddPosts);
+
+
+            return posts;
+
+
+            //     return userManager.getPostsForUser(event.getUser().getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
 
     }
 

@@ -45,7 +45,7 @@ PostManager postManager = PostManager.getInstance();
 
     DynamoDBManager manager = new DynamoDBManager();
 
-    Map<Integer,Stack<Post>> userPosts = new HashMap<>();
+    Map<Integer,List<String>> userPosts = new HashMap<>();
 
     public Integer getUserIndex(User user) {
 
@@ -265,14 +265,14 @@ PostManager postManager = PostManager.getInstance();
         // common users across user followers and subject followers . now process that set .
 
         userIndices.stream().forEach(num->{
-            Stack<Post> posts = userPosts.get(num);
+            List<String> posts = userPosts.get(num);
             if (posts==null)
             {
-                posts = new Stack<>();
+                posts = new ArrayList<>();
                 userPosts.put(num,posts);
             }
 
-            posts.add(post);
+            posts.add(post.getId());
 
         });
 
@@ -280,7 +280,34 @@ PostManager postManager = PostManager.getInstance();
     }
 
 
-    public Posts getPostsForUser(String id) {
+
+    public PostIds getPostsForUser(String id) {
+
+        PostIds postIds = new PostIds();
+
+        Integer index = userids.get(id);
+        if (index!=null) {
+
+            List<String> posts = userPosts.get(index);
+            if (posts != null) {
+
+                postIds.setPostIds((ArrayList) posts);
+            }
+
+        }
+
+     /*   Posts posts = new Posts();
+
+        if (postStack!=null) {
+
+            posts.setPosts(postStack.stream().filter(p -> postManager.isExists(p.getId())).collect(Collectors.toCollection(ArrayList::new)));
+
+        }*/
+        return postIds;
+    }
+
+
+  /*  public Posts getPostsForUser(String id) {
 
         int index = userids.get(id);
         Stack<Post> postStack = userPosts.get(index);
@@ -293,7 +320,7 @@ PostManager postManager = PostManager.getInstance();
 
         }
         return posts;
-    }
+    }*/
 
 
     public void addUserAsSubjectFollower(User self , Integer subjectIndex, Subject subject)

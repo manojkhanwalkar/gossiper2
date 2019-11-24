@@ -4,12 +4,14 @@ import com.codahale.metrics.annotation.Timed;
 import data.*;
 import event.*;
 import processor.Dispatcher;
+import processor.UserDispatcher;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -22,7 +24,7 @@ public class UserResource {
 
 
 
-    Dispatcher dispatcher = new Dispatcher();
+    UserDispatcher dispatcher = new UserDispatcher();
 
 
     public UserResource(String template, String defaultName) {
@@ -221,43 +223,14 @@ public class UserResource {
 
     }
 
-    @POST
-    @Timed
-    @Path("/post")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String post(AddPost post) {
 
-
-         dispatcher.dispatch(post);
-
-         return "posted";
-
-
-
-    }
-
-
-    @POST
-    @Timed
-    @Path("/deletepost")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String post(DeletePost post) {
-
-
-        dispatcher.dispatch(post);
-
-        return "post deleted";
-
-
-
-    }
 
 
     @POST
     @Timed
     @Path("/retrieve")
     @Produces(MediaType.APPLICATION_JSON)
-    public Posts post(RetrievePost retrievePost) {
+    public PostIds post(RetrievePost retrievePost) {
 
 
        return  dispatcher.dispatch(retrievePost);

@@ -210,7 +210,7 @@ public class ClientVerifier {
 
         ClientVerifier verifier = new ClientVerifier();
 
-        for (int i=0;i<10;i++)
+        for (int i=0;i<4;i++)
             verifier.addUser(new User("A" + String.valueOf(i)));
 
 
@@ -228,7 +228,7 @@ public class ClientVerifier {
 
         });
 
-        for (int i=0;i<10;i++)
+        for (int i=0;i<4;i++)
             verifier.deleteUser(new User("A"+ String.valueOf(i)));
 
 
@@ -259,7 +259,7 @@ public class ClientVerifier {
 
         Post post = new Post();
 
-        for (int i=0;i<10;i++) {
+        for (int i=0;i<5;i++) {
             post.setId(UUID.randomUUID().toString());
             post.setMessage("New Post " + System.nanoTime());
             post.setPoster(new User("A1"));
@@ -268,6 +268,13 @@ public class ClientVerifier {
             AddPost addPost = new AddPost();
             addPost.setPost(post);
             verifier.post(addPost);
+
+            RetrievePost retrievePost = new RetrievePost();
+            retrievePost.setUser(new User("A1"));
+            verifier.retrieve(retrievePost);
+
+
+
         }
 
 
@@ -344,9 +351,6 @@ public class ClientVerifier {
 
 
 
-        RetrievePost retrievePost = new RetrievePost();
-        retrievePost.setUser(user1);
-        verifier.retrieve(retrievePost);
 
 
 

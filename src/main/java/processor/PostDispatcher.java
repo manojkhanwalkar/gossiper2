@@ -19,6 +19,23 @@ public class PostDispatcher {
 
     }
 
+    public Posts dispatch(PostIds event)
+    {
+
+        Posts posts = new Posts();
+
+        event.getPostIds().stream().forEach(id->{
+
+           Post post =  postManager.getPost(id);
+           if (post!=null)
+               posts.addPost(post);
+        });
+
+       return posts;
+
+    }
+
+
 
     public void dispatch(DeletePost event)
     {

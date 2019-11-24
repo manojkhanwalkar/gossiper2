@@ -71,20 +71,19 @@ public class PostResource {
 
     }
 
-
-/*    @POST
+    @POST
     @Timed
     @Path("/retrieve")
     @Produces(MediaType.APPLICATION_JSON)
-    public Posts post(RetrievePost retrievePost) {
+    public Posts post(PostIds postIds) {
 
 
-       return  dispatcher.dispatch(retrievePost);
+       return  dispatcher.dispatch(postIds);
 
 
 
 
-    } */
+    }
 
 
 

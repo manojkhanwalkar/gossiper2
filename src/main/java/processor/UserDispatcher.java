@@ -6,7 +6,9 @@ import manager.PostManager;
 import manager.SubjectManager;
 import manager.UserManager;
 
-public class Dispatcher {
+import java.util.List;
+
+public class UserDispatcher {
 
 
     UserManager userManager = UserManager.getInstance();
@@ -31,17 +33,21 @@ public class Dispatcher {
     public void dispatch(AddPost event)
     {
 
-        postManager.addPost(event.getPost());
 
         userManager.queuePost(event.getPost());
     }
 
- /*   public Posts dispatch(RetrievePost event)
+    public PostIds dispatch(RetrievePost event)
     {
 
-        return userManager.getPostsForUser(event.getUser().getId());
+        PostIds postIds = userManager.getPostsForUser(event.getUser().getId());
+        if (postIds==null)
+        {
+            postIds = new PostIds();
+        }
+        return postIds;
 
-    }*/
+    }
 
     public UserInfo dispatch(GetUser event)
     {

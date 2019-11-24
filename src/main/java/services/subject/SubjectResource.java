@@ -253,20 +253,6 @@ public class SubjectResource {
     }
 
 
-    @POST
-    @Timed
-    @Path("/retrieve")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Posts post(RetrievePost retrievePost) {
-
-
-       return  dispatcher.dispatch(retrievePost);
-
-
-
-
-    }
-
 
  /*   @GET
     @Timed
