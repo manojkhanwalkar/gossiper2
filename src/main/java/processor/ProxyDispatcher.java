@@ -9,6 +9,8 @@ import util.Connection;
 import util.ConnectionManager;
 import util.JSONUtil;
 
+import java.util.List;
+
 
 public class ProxyDispatcher {
 
@@ -18,8 +20,29 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
     public Users dispatch()
     {
 
-    //    return userManager.getUsers();
-        return null;
+        Users users = new Users();
+        List<Connection> connections = connectionManager.get(ConnectionManager.ServiceType.User);
+
+        connections.stream().forEach(connection->{
+
+
+            try {
+                String response = connection.send("users");
+
+                Users users1 = (Users)JSONUtil.fromJSON(response,Users.class);
+                users.addUsers(users1.getUsers());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+
+        });
+
+        return users;
+
+
     }
 
 

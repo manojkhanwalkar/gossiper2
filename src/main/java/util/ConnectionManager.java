@@ -62,4 +62,10 @@ public class ConnectionManager {
 
     }
 
+
+    public List<Connection> get(ServiceType type)
+    {
+        return connections.get(type);
+    }
+
 }

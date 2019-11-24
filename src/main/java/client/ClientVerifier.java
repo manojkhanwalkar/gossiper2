@@ -209,6 +209,11 @@ public class ClientVerifier {
         for (int i=0;i<26;i++)
             verifier.addUser(new User(String.valueOf('A'+i)));
 
+
+        Users users = verifier.getUsers();
+
+        System.out.println(users);
+
         for (int i=0;i<26;i++)
             verifier.deleteUser(new User(String.valueOf('A'+i)));
 
