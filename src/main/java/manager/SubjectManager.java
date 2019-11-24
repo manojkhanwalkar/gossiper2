@@ -37,7 +37,7 @@ public class SubjectManager {
 
     List<String> subjectidList = new ArrayList<>();
 
-    DAG followers = new DAG(100);
+    DAG followers = new DAG();
 
     DynamoDBManager manager = new DynamoDBManager();
 

@@ -39,9 +39,9 @@ PostManager postManager = PostManager.getInstance();
 
     List<String> useridList = new ArrayList<>();
 
-    DAG followers = new DAG(100);
-    DAG follows = new DAG(100);
-    DAG followsSubject = new DAG(100);
+    DAG followers = new DAG();
+    DAG follows = new DAG();
+    DAG followsSubject = new DAG();
 
     DynamoDBManager manager = new DynamoDBManager();
 
@@ -296,31 +296,12 @@ PostManager postManager = PostManager.getInstance();
 
         }
 
-     /*   Posts posts = new Posts();
 
-        if (postStack!=null) {
-
-            posts.setPosts(postStack.stream().filter(p -> postManager.isExists(p.getId())).collect(Collectors.toCollection(ArrayList::new)));
-
-        }*/
         return postIds;
     }
 
 
-  /*  public Posts getPostsForUser(String id) {
 
-        int index = userids.get(id);
-        Stack<Post> postStack = userPosts.get(index);
-
-        Posts posts = new Posts();
-
-        if (postStack!=null) {
-
-            posts.setPosts(postStack.stream().filter(p -> postManager.isExists(p.getId())).collect(Collectors.toCollection(ArrayList::new)));
-
-        }
-        return posts;
-    }*/
 
 
     public void addUserAsSubjectFollower(User self , Integer subjectIndex, Subject subject)

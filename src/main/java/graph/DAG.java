@@ -3,46 +3,39 @@ package graph;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DAG {
 
-    List<List<Integer>>  adjacencyList = new ArrayList<List<Integer>>();
+    Map<Integer,List<Integer>> adjacencyList = new HashMap<>();
 
-    public DAG(int initialCapacity)
+    public DAG()
     {
-        for (int i=0;i<initialCapacity;i++)
-        {
-            adjacencyList.add(new ArrayList<Integer>());
-        }
+
     }
 
     //TODO - return an immutable copy .
-    public List<List<Integer>> getAdjacencyList()
+    public  Map<Integer,List<Integer>> getAdjacencyList()
     {
         return  adjacencyList;
     }
 
     public void addNode(int num)
     {
-        if (num<adjacencyList.size())
-            return;
-        else
-        {
-            int initialSize = adjacencyList.size();
-            for (int i=initialSize;i<=num;i++)
-            {
-                adjacencyList.add(new ArrayList<Integer>());
-            }
-        }
+
+        adjacencyList.put(num,new ArrayList<>());
+
     }
 
     public void addEdge(int src, int tgt)
     {
-        int max = (src>tgt? src: tgt);
-        addNode(max);
 
-        List<Integer> list = adjacencyList.get(src);
+        List<Integer> list  = adjacencyList.computeIfAbsent(src, key-> new ArrayList<>());
+        adjacencyList.computeIfAbsent(tgt, key-> new ArrayList<>()); // so that tgt is a node in the graph .
+
+
         if (list.contains(tgt))
             return;
         else
@@ -59,29 +52,27 @@ public class DAG {
 
     public List<Integer> getEdges(int node)
     {
-        if (node<adjacencyList.size())
-        {
-            return adjacencyList.get(node); //TODO - return a immutable copy here
-        }
-        else
-        {
-            return null;   // TODO - return optional here
-        }
+
+            return adjacencyList.get(node); //TODO - return a immutable copy here , also Optional
+
     }
 
     public static void print(DAG dag)
     {
-            List<List<Integer>> adjacencyList = dag.getAdjacencyList();
+            var adjacencyList = dag.getAdjacencyList();
 
-            for (int i=0;i<adjacencyList.size();i++)
-            {
-                System.out.println(i + "---> " + adjacencyList.get(i));
-            }
+            adjacencyList.entrySet().stream().forEach(entry->{
+
+                System.out.println(entry.getKey() + "---> " + entry.getValue());
+
+            });
+
+
     }
 
     public static DAG reverse(DAG dag)
     {
-        DAG rev = new DAG(dag.getAdjacencyList().size());
+        DAG rev = new DAG();
         for (int i=0;i<dag.getAdjacencyList().size();i++)
         {
             int tgt = i;
@@ -99,7 +90,7 @@ public class DAG {
 
     public static void main(String[] args) {
 
-        DAG dag = new DAG(4);
+        DAG dag = new DAG();
         dag.addEdge(0,1);
         dag.addEdge(0,2);
         dag.addEdge(0,3);
@@ -112,7 +103,13 @@ public class DAG {
 
         System.out.println();
 
-        dag = DAG.reverse(DAG.reverse(dag));
+        dag = DAG.reverse(dag);
+
+        DAG.print(dag);
+
+        System.out.println();
+
+        dag = DAG.reverse(dag);
 
         DAG.print(dag);
 

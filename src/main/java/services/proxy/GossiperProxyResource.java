@@ -3,7 +3,6 @@ package services.proxy;
 import com.codahale.metrics.annotation.Timed;
 import data.*;
 import event.*;
-import processor.Dispatcher;
 import processor.ProxyDispatcher;
 
 import javax.ws.rs.GET;

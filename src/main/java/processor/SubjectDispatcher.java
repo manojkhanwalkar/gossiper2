@@ -1,12 +1,15 @@
 package processor;
 
-import data.*;
+import data.SubjectInfo;
+import data.Subjects;
+import data.UserInfo;
+import data.Users;
 import event.*;
 import manager.PostManager;
 import manager.SubjectManager;
 import manager.UserManager;
 
-public class Dispatcher {
+public class SubjectDispatcher {
 
 
     UserManager userManager = UserManager.getInstance();

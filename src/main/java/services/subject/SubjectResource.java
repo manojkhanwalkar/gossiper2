@@ -3,7 +3,7 @@ package services.subject;
 import com.codahale.metrics.annotation.Timed;
 import data.*;
 import event.*;
-import processor.Dispatcher;
+import processor.SubjectDispatcher;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -22,7 +22,7 @@ public class SubjectResource {
 
 
 
-    Dispatcher dispatcher = new Dispatcher();
+    SubjectDispatcher dispatcher = new SubjectDispatcher();
 
 
     public SubjectResource(String template, String defaultName) {
