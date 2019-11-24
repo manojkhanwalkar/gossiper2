@@ -46,12 +46,7 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
     }
 
 
-    public Subjects retrieveSubjects()
-    {
-        return null;
 
-     //   return subjectManager.getSubjects();
-    }
 
     public void dispatch(AddPost event)
     {
@@ -88,11 +83,7 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
 
 
 
-    public SubjectInfo dispatch(GetSubject subject)
-    {
-        return null;
-        //return subjectManager.getSubject(subject.getSubjectId());
-    }
+
 
     public void dispatch(AddUser event)
     {
@@ -162,17 +153,48 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
     }
 
 
+
+
     public void dispatch(AddSubject event)
     {
-       // subjectManager.addSubject(event.getSubject());
+
+        Connection connection = connectionManager.get(ConnectionManager.ServiceType.Subject,event.getSubject().getId());
+
+        try {
+            String response = connection.send(JSONUtil.toJSON(event),"createSubject");
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
     public void dispatch(DeleteSubject event)
     {
-        //subjectManager.deleteSubject(event.getSubject());
+
+        Connection connection = connectionManager.get(ConnectionManager.ServiceType.Subject,event.getSubject().getId());
+
+        try {
+            String response = connection.send(JSONUtil.toJSON(event),"deleteSubject");
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    public SubjectInfo dispatch(GetSubject subject)
+    {
+        return null;
+        //return subjectManager.getSubject(subject.getSubjectId());
+    }
+
+
+    public Subjects retrieveSubjects()
+    {
+        return null;
+
+        //   return subjectManager.getSubjects();
+    }
 
 
 

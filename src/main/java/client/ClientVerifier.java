@@ -78,14 +78,18 @@ public class ClientVerifier {
     }
 
 
-    public void deleteSubject(Subject subject) throws Exception
+    public void deleteSubject(Subject subject)
     {
-        DeleteSubject deleteSubject = new DeleteSubject();
-        deleteSubject.setSubject(subject);
+        try {
+            DeleteSubject deleteSubject = new DeleteSubject();
+            deleteSubject.setSubject(subject);
 
-        String response = connection.send(JSONUtil.toJSON(deleteSubject),"deleteSubject");
+            String response = connection.send(JSONUtil.toJSON(deleteSubject),"deleteSubject");
 
-        System.out.println(response);
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Users getUsers() throws Exception
@@ -227,6 +231,24 @@ public class ClientVerifier {
         for (int i=0;i<26;i++)
             verifier.deleteUser(new User(String.valueOf('A'+i)));
 
+
+        List.of("politics","technology","health").stream().forEach(s->{
+
+            Subject subject = new Subject(s);
+            verifier.addSubject(subject);
+
+        });
+
+
+        List.of("politics","technology","health").stream().forEach(s->{
+
+            Subject subject = new Subject(s);
+            verifier.deleteSubject(subject);
+
+        });
+
+
+
  /*     User user1 = new User("User1191");
       User user2 = new User("User2191");
 
@@ -263,12 +285,7 @@ public class ClientVerifier {
 
 
 
-        List.of("politics","technology","health").stream().forEach(s->{
 
-            Subject subject = new Subject(s);
-            verifier.addSubject(subject);
-
-        });
 
 
        Subject subject2 = new Subject("politics");
