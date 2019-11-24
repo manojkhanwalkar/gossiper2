@@ -104,8 +104,8 @@ PostManager postManager = PostManager.getInstance();
 
         UserRecord userRecord = manager.getUser(userId);
         UserInfo userInfo = new UserInfo();
-        userInfo.setFollowedBy(userRecord.getFollowedBy());
-        userInfo.setFollows(userRecord.getFollows());
+        userInfo.setFollowedBy((ArrayList)userRecord.getFollowedBy());
+        userInfo.setFollows((ArrayList)userRecord.getFollows());
         userInfo.setName(userRecord.getName());
         userInfo.setUserId(userRecord.getUserId());
 

@@ -12,11 +12,11 @@ public class UserInfo {
 
     private String name;
 
-    private List<String> follows = new ArrayList<>();
+    private ArrayList<String> follows = new ArrayList<>();
 
-    private List<String> followedBy = new ArrayList<>();
+    private ArrayList<String> followedBy = new ArrayList<>();
 
-    private List<String> followsSubject = new ArrayList<>();
+    private ArrayList<String> followsSubject = new ArrayList<>();
 
 
 
@@ -37,7 +37,7 @@ public class UserInfo {
         return follows;
     }
 
-    public void setFollows(List<String> follows) {
+    public void setFollows(ArrayList<String> follows) {
         this.follows = follows;
     }
 
@@ -48,7 +48,7 @@ public class UserInfo {
         return followedBy;
     }
 
-    public void setFollowedBy(List<String> followedBy) {
+    public void setFollowedBy(ArrayList<String> followedBy) {
         this.followedBy = followedBy;
     }
 
@@ -59,7 +59,7 @@ public class UserInfo {
         return followsSubject;
     }
 
-    public void setFollowsSubject(List<String> followsSubject) {
+    public void setFollowsSubject(ArrayList<String> followsSubject) {
         this.followsSubject = followsSubject;
     }
 

@@ -212,7 +212,17 @@ public class ClientVerifier {
 
         Users users = verifier.getUsers();
 
-        System.out.println(users);
+        users.getUsers().stream().forEach(u->{
+
+            GetUser getUser = new GetUser();
+            getUser.setUserId(u);
+            try {
+                verifier.getUser(getUser);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
 
         for (int i=0;i<26;i++)
             verifier.deleteUser(new User(String.valueOf('A'+i)));

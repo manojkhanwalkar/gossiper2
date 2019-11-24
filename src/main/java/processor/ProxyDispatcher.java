@@ -71,8 +71,19 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
 
     public UserInfo dispatch(GetUser event)
     {
+        Connection connection = connectionManager.get(ConnectionManager.ServiceType.User,event.getUserId());
+
+        try {
+            String response = connection.send(JSONUtil.toJSON(event),"user");
+            UserInfo userInfo = (UserInfo) JSONUtil.fromJSON(response,UserInfo.class);
+
+            return userInfo;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return null;
-        //return  userManager.getUser(event.getUserId());
     }
 
 
