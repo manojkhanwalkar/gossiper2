@@ -210,8 +210,8 @@ public class ClientVerifier {
 
         ClientVerifier verifier = new ClientVerifier();
 
-     /*   for (int i=0;i<26;i++)
-            verifier.addUser(new User(String.valueOf('A'+i)));
+        for (int i=0;i<10;i++)
+            verifier.addUser(new User("A" + String.valueOf(i)));
 
 
         Users users = verifier.getUsers();
@@ -228,8 +228,8 @@ public class ClientVerifier {
 
         });
 
-        for (int i=0;i<26;i++)
-            verifier.deleteUser(new User(String.valueOf('A'+i))); */
+        for (int i=0;i<10;i++)
+            verifier.deleteUser(new User("A"+ String.valueOf(i)));
 
 
         List.of("politics","technology","health").stream().forEach(s->{
@@ -256,6 +256,24 @@ public class ClientVerifier {
             verifier.deleteSubject(subject);
 
         });
+
+        Post post = new Post();
+
+        for (int i=0;i<10;i++) {
+            post.setId(UUID.randomUUID().toString());
+            post.setMessage("New Post " + System.nanoTime());
+            post.setPoster(new User("A1"));
+            post.setSubject(new Subject("health"));
+
+            AddPost addPost = new AddPost();
+            addPost.setPost(post);
+            verifier.post(addPost);
+        }
+
+
+        DeletePost deletePost = new DeletePost();
+        deletePost.setPost(post);
+        verifier.post(deletePost);
 
 
 
@@ -304,10 +322,6 @@ public class ClientVerifier {
 
 
 
-        DeletePost deletePost = new DeletePost();
-        deletePost.setPost(post);
-        verifier.post(deletePost);
-
 
 
         //System.out.println(subjects);
@@ -326,17 +340,9 @@ public class ClientVerifier {
       //  verifier.deleteUser(user2);
 
 
-        for (int i=0;i<10;i++) {
-            Post post = new Post();
-            post.setId(UUID.randomUUID().toString());
-            post.setMessage("New Post " + System.nanoTime());
-            post.setPoster(user2);
-            post.setSubject(subject1);
 
-            AddPost addPost = new AddPost();
-            addPost.setPost(post);
-            verifier.post(addPost);
-        }
+
+
 
         RetrievePost retrievePost = new RetrievePost();
         retrievePost.setUser(user1);

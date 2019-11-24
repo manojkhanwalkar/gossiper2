@@ -48,22 +48,6 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
 
 
 
-    public void dispatch(AddPost event)
-    {
-
-  //      postManager.addPost(event.getPost());
-
-   //     userManager.queuePost(event.getPost());
-    }
-
-    public Posts dispatch(RetrievePost event)
-    {
-        return null;
-
-   //     return userManager.getPostsForUser(event.getUser().getId());
-
-    }
-
     public UserInfo dispatch(GetUser event)
     {
         Connection connection = connectionManager.get(ConnectionManager.ServiceType.User,event.getUserId());
@@ -98,12 +82,7 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
         }
     }
 
-    public void dispatch(DeletePost event)
-    {
 
-        //postManager.deletePost(event.getPost());
-
-    }
 
     public void dispatch(DeleteUser event)
     {
@@ -116,6 +95,8 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //TODO - get user follows and followed and delete the user from those users followed and follows list
     }
 
     public void dispatch(FollowSubject event)
@@ -221,6 +202,54 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
             });
 
             return subjects;
+
+    }
+
+
+
+    public void dispatch(AddPost event)
+    {
+
+        Connection connection = connectionManager.get(ConnectionManager.ServiceType.Post,event.getPost().getId());
+
+        try {
+            String response = connection.send(JSONUtil.toJSON(event),"post");
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //TODO - send to both user services for them to process the post
+
+        //      postManager.addPost(event.getPost());
+
+        //     userManager.queuePost(event.getPost());
+    }
+
+    public Posts dispatch(RetrievePost event)
+    {
+        return null;
+
+        //     return userManager.getPostsForUser(event.getUser().getId());
+
+    }
+
+
+
+
+    public void dispatch(DeletePost event)
+    {
+
+        //postManager.deletePost(event.getPost());
+
+        Connection connection = connectionManager.get(ConnectionManager.ServiceType.Post,event.getPost().getId());
+
+        try {
+            String response = connection.send(JSONUtil.toJSON(event),"deletepost");
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import data.*;
 import event.*;
 import processor.Dispatcher;
+import processor.PostDispatcher;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -22,7 +23,7 @@ public class PostResource {
 
 
 
-    Dispatcher dispatcher = new Dispatcher();
+    PostDispatcher dispatcher = new PostDispatcher();
 
 
     public PostResource(String template, String defaultName) {
@@ -35,191 +36,9 @@ public class PostResource {
     }
 
 
-    @POST
-    @Timed
-    @Path("/create")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String createUser(AddUser request) {
 
 
-        dispatcher.dispatch(request);
 
-       // return keyExchangeManager.processExchange(request);
-
-        return "User added";
-
-
-    }
-
-    @POST
-    @Timed
-    @Path("/createSubject")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String createSubject(AddSubject request) {
-
-
-        dispatcher.dispatch(request);
-
-        // return keyExchangeManager.processExchange(request);
-
-        return "Subject added";
-
-
-    }
-
-    @POST
-    @Timed
-    @Path("/deleteSubject")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String deleteSubject(DeleteSubject request) {
-
-
-        dispatcher.dispatch(request);
-
-        // return keyExchangeManager.processExchange(request);
-
-        return "Subject  deleted";
-
-
-    }
-
-
-    @POST
-    @Timed
-    @Path("/delete")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String deleteUser(DeleteUser request) {
-
-
-        dispatcher.dispatch(request);
-
-        // return keyExchangeManager.processExchange(request);
-
-        return "User deleted";
-
-
-    }
-
-
-    @POST
-    @Timed
-    @Path("/follow")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String follow(FollowUser request) {
-
-
-        dispatcher.dispatch(request);
-
-        // return keyExchangeManager.processExchange(request);
-
-        return "Follower added";
-
-
-    }
-
-
-    @POST
-    @Timed
-    @Path("/followsubject")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String followSubject(FollowSubject request) {
-
-
-        dispatcher.dispatch(request);
-
-        // return keyExchangeManager.processExchange(request);
-
-        return "Follower added";
-
-
-    }
-
-    @POST
-    @Timed
-    @Path("/unfollow")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String unfollow(UnFollowUser request) {
-
-
-        dispatcher.dispatch(request);
-
-        // return keyExchangeManager.processExchange(request);
-
-        return "Follower removed";
-
-
-    }
-
-    @POST
-    @Timed
-    @Path("/unfollowsubject")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String unfollowSubject(UnFollowSubject request) {
-
-
-        dispatcher.dispatch(request);
-
-        // return keyExchangeManager.processExchange(request);
-
-        return "Follower removed";
-
-
-    }
-
-    @GET
-    @Timed
-    @Path("/users")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Users users() {
-
-
-        return dispatcher.dispatch();
-
-
-
-
-    }
-
-    @GET
-    @Timed
-    @Path("/subjects")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Subjects subjects() {
-
-
-        return dispatcher.retrieveSubjects();
-
-
-
-
-    }
-
-
-    @POST
-    @Timed
-    @Path("/user")
-    @Produces(MediaType.APPLICATION_JSON)
-    public UserInfo user(GetUser user) {
-
-
-        return dispatcher.dispatch(user);
-
-
-
-    }
-
-    @POST
-    @Timed
-    @Path("/subject")
-    @Produces(MediaType.APPLICATION_JSON)
-    public SubjectInfo subject(GetSubject subject) {
-
-
-        return dispatcher.dispatch(subject);
-
-
-
-    }
 
     @POST
     @Timed
@@ -253,7 +72,7 @@ public class PostResource {
     }
 
 
-    @POST
+/*    @POST
     @Timed
     @Path("/retrieve")
     @Produces(MediaType.APPLICATION_JSON)
@@ -265,19 +84,9 @@ public class PostResource {
 
 
 
-    }
+    } */
 
 
- /*   @GET
-    @Timed
-    @Path("/claimkey")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String exchange() {
-
-
-        return rsaKeyHolder.getPublicKeyStr();
-
-    }*/
 
 
 

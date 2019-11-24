@@ -125,6 +125,8 @@ PostManager postManager = PostManager.getInstance();
             UserRecord userRecord = manager.getUser(user.getId());
             manager.removeUser(userRecord);
 
+            //TODO - process the follows and followed lists and remove the persistence from there
+
             subjectIndices.stream().forEach(i->{
 
                 SubjectManager subjectManager = SubjectManager.getInstance();
@@ -226,6 +228,7 @@ PostManager postManager = PostManager.getInstance();
         userRecord.getFollowedBy().remove(self.getId());
         manager.putUser(userRecord);
 
+        //TODO - get followed by users list and delete this user from their follows list
 
 
     }
