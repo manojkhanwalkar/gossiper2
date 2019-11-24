@@ -119,7 +119,7 @@ public class SubjectManager {
 
         SubjectInfo subjectInfo = new SubjectInfo();
 
-        subjectInfo.setFollowedBy(subjectRecord.getFollowedBy());
+        subjectInfo.setFollowedBy((ArrayList)subjectRecord.getFollowedBy());
         subjectInfo.setName(subjectRecord.getName());
 
         subjectInfo.setSubjectId(subjectRecord.getSubjectId());

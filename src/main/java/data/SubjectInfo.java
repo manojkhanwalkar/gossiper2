@@ -14,7 +14,7 @@ public class SubjectInfo {
 
 
 
-    private List<String> followedBy = new ArrayList<>();
+    private ArrayList<String> followedBy = new ArrayList<>();
 
     public String getSubjectId() {
         return subjectId;
@@ -32,11 +32,11 @@ public class SubjectInfo {
         this.name = name;
     }
 
-    public List<String> getFollowedBy() {
+    public ArrayList<String> getFollowedBy() {
         return followedBy;
     }
 
-    public void setFollowedBy(List<String> followedBy) {
+    public void setFollowedBy(ArrayList<String> followedBy) {
         this.followedBy = followedBy;
     }
 

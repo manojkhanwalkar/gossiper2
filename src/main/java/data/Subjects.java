@@ -19,6 +19,11 @@ public class Subjects {
         subjects.add(subject);
     }
 
+    public void addSubjects(ArrayList<String> subjects)
+    {
+        this.subjects.addAll(subjects);
+    }
+
 
     @Override
     public String toString() {

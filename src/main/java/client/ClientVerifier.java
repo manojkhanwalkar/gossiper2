@@ -210,7 +210,7 @@ public class ClientVerifier {
 
         ClientVerifier verifier = new ClientVerifier();
 
-        for (int i=0;i<26;i++)
+     /*   for (int i=0;i<26;i++)
             verifier.addUser(new User(String.valueOf('A'+i)));
 
 
@@ -229,7 +229,7 @@ public class ClientVerifier {
         });
 
         for (int i=0;i<26;i++)
-            verifier.deleteUser(new User(String.valueOf('A'+i)));
+            verifier.deleteUser(new User(String.valueOf('A'+i))); */
 
 
         List.of("politics","technology","health").stream().forEach(s->{
@@ -238,6 +238,16 @@ public class ClientVerifier {
             verifier.addSubject(subject);
 
         });
+
+
+        Subjects subjects = verifier.getSubjects();
+
+        subjects.getSubjects().stream().forEach(s->{
+
+            verifier.getSubject(s);
+
+        });
+
 
 
         List.of("politics","technology","health").stream().forEach(s->{
@@ -298,13 +308,6 @@ public class ClientVerifier {
         deletePost.setPost(post);
         verifier.post(deletePost);
 
-        Subjects subjects = verifier.getSubjects();
-
-        subjects.getSubjects().stream().forEach(s->{
-
-            verifier.getSubject(s);
-
-        });
 
 
         //System.out.println(subjects);

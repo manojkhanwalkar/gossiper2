@@ -184,16 +184,44 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
 
     public SubjectInfo dispatch(GetSubject subject)
     {
+        Connection connection = connectionManager.get(ConnectionManager.ServiceType.Subject,subject.getSubjectId());
+
+        try {
+            String response = connection.send(JSONUtil.toJSON(subject),"subject");
+            SubjectInfo subjectInfo = (SubjectInfo) JSONUtil.fromJSON(response,SubjectInfo.class);
+
+            return subjectInfo;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return null;
-        //return subjectManager.getSubject(subject.getSubjectId());
     }
 
 
     public Subjects retrieveSubjects()
     {
-        return null;
 
-        //   return subjectManager.getSubjects();
+            Subjects subjects = new Subjects();
+
+            List<Connection> connectionList = connectionManager.get(ConnectionManager.ServiceType.Subject);
+            connectionList.stream().forEach(connection->{
+
+                try {
+                    String response = connection.send("subjects");
+
+                    Subjects subjects1 = (Subjects) JSONUtil.fromJSON(response, Subjects.class);
+                    subjects.addSubjects(subjects1.getSubjects());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            });
+
+            return subjects;
+
     }
 
 
