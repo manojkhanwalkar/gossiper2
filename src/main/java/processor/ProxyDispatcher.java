@@ -114,6 +114,24 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
     public void dispatch(FollowUser event)
     {
 
+        // send to both user service instances . each instance checks if user self and user target belongs to it .
+        // self - update DAG and record with follows
+        // target - update DAG and record with followed by
+
+        List<Connection> connections = connectionManager.get(ConnectionManager.ServiceType.User);
+
+        connections.stream().forEach(connection->{
+
+            try {
+                String response = connection.send(JSONUtil.toJSON(event),"follow");
+                System.out.println(response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+
+
        // userManager.addFollower(event.getSelf(),event.getTarget());
 
     }

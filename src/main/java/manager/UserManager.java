@@ -164,28 +164,27 @@ public class UserManager {
 
     public void addFollower(User self , User userToFollow)
     {
-  /*      int selfIndex = userids.get(self.getId());
-        int userToFollowIndex = userids.get(userToFollow.getId());
 
-        follows.addEdge(selfIndex,userToFollowIndex);
-        followers.addEdge(userToFollowIndex,selfIndex);
-
-        UserRecord userRecord = manager.getUser(self.getId());
-        if (!userRecord.getFollows().contains(userToFollow.getId()))
+        if (userids.contains(self.getId()))
         {
-            userRecord.getFollows().add(userToFollow.getId());
-            manager.putUser(userRecord);
-
-            userRecord = manager.getUser(userToFollow.getId());
-            userRecord.getFollowedBy().add(self.getId());
-            manager.putUser(userRecord);
+            follows.addEdge(self.getId(),userToFollow.getId());
+            UserRecord userRecord = manager.getUser(self.getId());
+            if (!userRecord.getFollows().contains(userToFollow.getId())) {
+                userRecord.getFollows().add(userToFollow.getId());
+                manager.putUser(userRecord);
+            }
         }
-        else
+
+        if (userids.contains(userToFollow.getId()))
         {
-            System.out.println("Follower already exists " + self + "  " + userToFollow);
-        }*/
-
-
+            followers.addEdge(userToFollow.getId(),self.getId());
+            UserRecord userRecord = manager.getUser(userToFollow.getId());
+            if (!userRecord.getFollowedBy().contains(self.getId()))
+            {
+                userRecord.getFollowedBy().add(self.getId());
+                manager.putUser(userRecord);
+            }
+        }
 
     }
 
