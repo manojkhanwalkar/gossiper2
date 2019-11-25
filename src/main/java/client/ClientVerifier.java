@@ -233,21 +233,13 @@ public class ClientVerifier {
             addPost.setPost(post);
             verifier.post(addPost);
 
-            RetrievePost retrievePost = new RetrievePost();
+           /* RetrievePost retrievePost = new RetrievePost();
             retrievePost.setUser(new User("A1"));
-            verifier.retrieve(retrievePost);
+            verifier.retrieve(retrievePost);*/
 
 
 
         }
-
-
-     /*   FollowUser followUser = new FollowUser();
-        followUser.setSelf(new User("A1"));
-        followUser.setTarget(new User("A2"));
-
-        verifier.followUser(followUser);
-
 
 
         Users users = verifier.getUsers();
@@ -264,11 +256,6 @@ public class ClientVerifier {
 
         });
 
-        for (int i=0;i<4;i++)
-            verifier.deleteUser(new User("A"+ String.valueOf(i)));
-
-
-
 
         Subjects subjects = verifier.getSubjects();
 
@@ -277,6 +264,24 @@ public class ClientVerifier {
             verifier.getSubject(s);
 
         });
+
+
+
+
+     /*   FollowUser followUser = new FollowUser();
+        followUser.setSelf(new User("A1"));
+        followUser.setTarget(new User("A2"));
+
+        verifier.followUser(followUser);
+
+
+
+
+        for (int i=0;i<4;i++)
+            verifier.deleteUser(new User("A"+ String.valueOf(i)));
+
+
+
 
 
 

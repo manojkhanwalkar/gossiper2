@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static util.ConnectionConstants.*;
 
@@ -28,7 +29,7 @@ public class ConnectionManager {
         return  ConnectionMnagerHolder.connectionManager;
     }
 
-    Map<ServiceType, List<Connection>> connections = new HashMap<>();
+    Map<ServiceType, List<String>> connections = new HashMap<>();
 
     public void init()
     {
@@ -42,22 +43,20 @@ public class ConnectionManager {
 
     private void add(ServiceType type, String url)
     {
-        List<Connection> connectionList = connections.get(type);
-        if (connectionList==null)
-        {
-            connectionList = new ArrayList<>();
-            connections.put(type,connectionList);
-        }
 
-        connectionList.add(new Connection(url));
+        List<String> connectionList = connections.computeIfAbsent(type, k->new ArrayList<>());
+
+        connectionList.add(url);
     }
 
 
     public Connection get(ServiceType type, String id)
     {
-        List<Connection> connectionList = connections.get(type);
+        List<String> connectionList = connections.get(type);
 
-        return connectionList.get(Math.abs(id.hashCode()%2));
+        String url = connectionList.get(Math.abs(id.hashCode()%2));
+
+        return new Connection(url);
 
 
     }
@@ -65,7 +64,8 @@ public class ConnectionManager {
 
     public List<Connection> get(ServiceType type)
     {
-        return connections.get(type);
+
+        return connections.get(type).stream().map(url->new Connection(url)).collect(Collectors.toList());
     }
 
 }
