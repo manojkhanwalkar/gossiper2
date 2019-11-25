@@ -241,6 +241,20 @@ public class ClientVerifier {
 
         }
 
+        {
+            //System.out.println(subjects);
+            Subject subject1 = new Subject("politics");
+            Subject subject2 = new Subject("technology");
+            Subject subject3 = new Subject("health");
+
+
+            User user1 = new User("A1");
+            User user2 = new User("A2");
+            verifier.followSubject(user1,subject1);
+            verifier.followSubject(user2,subject2);
+            verifier.followSubject(user1,subject3);
+        }
+
 
         Users users = verifier.getUsers();
 

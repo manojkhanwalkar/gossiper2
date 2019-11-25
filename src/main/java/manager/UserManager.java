@@ -87,8 +87,14 @@ public class UserManager {
 
         UserRecord userRecord = manager.getUser(userId);
         UserInfo userInfo = new UserInfo();
+        if (userRecord==null)
+        {
+            System.out.println("User not found for " + userId);
+            return userInfo;
+        }
         userInfo.setFollowedBy((ArrayList)userRecord.getFollowedBy());
         userInfo.setFollows((ArrayList)userRecord.getFollows());
+        userInfo.setFollowsSubject((ArrayList)userRecord.getFollowsSubject());
         userInfo.setName(userRecord.getName());
         userInfo.setUserId(userRecord.getUserId());
 
@@ -285,17 +291,15 @@ public class UserManager {
 
 
 
-    public void addUserAsSubjectFollower(User self , Integer subjectIndex, Subject subject)
+    public void addUserAsSubjectFollower(User self , Subject subject)
     {
-       /* int selfIndex = userids.get(self.getId());
-        followsSubject.addEdge(selfIndex,subjectIndex);
+        followsSubject.addEdge(self.getId(),subject.getId());
         UserRecord userRecord = manager.getUser(self.getId());
         if (!userRecord.getFollowsSubject().contains(subject.getId()))
         {
             userRecord.getFollowsSubject().add(subject.getId());
             manager.putUser(userRecord);
         }
-*/
 
     }
 

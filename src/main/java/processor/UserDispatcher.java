@@ -81,11 +81,10 @@ public class UserDispatcher {
 
     public void dispatch(FollowSubject event)
     {
-        // add user to subject relationship in user manager
-        // add subject to user relationship in subject manager
 
+        userManager.addUserAsSubjectFollower(event.getUser(),event.getSubject());
 /*
-        userManager.addUserAsSubjectFollower(event.getUser(),subjectIndex,event.getSubject());
+
         subjectManager.addFollower(userIndex, event.getSubject(),event.getUser());*/
     }
 

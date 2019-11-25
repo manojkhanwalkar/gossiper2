@@ -101,14 +101,28 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
 
     public void dispatch(FollowSubject event)
     {
-        // add user to subject relationship in user manager
-        // add subject to user relationship in subject manager
+        //followsubject
+        // find user - send to that service
+        Connection connection = connectionManager.get(ConnectionManager.ServiceType.User,event.getUser().getId());
 
-    /*    Integer subjectIndex = subjectManager.getSubjectIndex(event.getSubject().getId());
-        Integer userIndex = userManager.getUserIndex(event.getUser());
+        try {
+            String response = connection.send(JSONUtil.toJSON(event),"followsubject");
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        userManager.addUserAsSubjectFollower(event.getUser(),subjectIndex,event.getSubject());
-        subjectManager.addFollower(userIndex, event.getSubject(),event.getUser());*/
+
+         connection = connectionManager.get(ConnectionManager.ServiceType.Subject,event.getSubject().getId());
+
+        try {
+            String response = connection.send(JSONUtil.toJSON(event),"followsubject");
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public void dispatch(FollowUser event)
@@ -129,6 +143,9 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
                 e.printStackTrace();
             }
         });
+
+
+
 
 
 
