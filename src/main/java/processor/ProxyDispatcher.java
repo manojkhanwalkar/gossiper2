@@ -155,11 +155,27 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
 
     public void dispatch(UnFollowSubject event)
     {
-  /*      Integer subjectIndex = subjectManager.getSubjectIndex(event.getSubject().getId());
-        Integer userIndex = userManager.getUserIndex(event.getUser());
+        //followsubject
+        // find user - send to that service
+        Connection connection = connectionManager.get(ConnectionManager.ServiceType.User,event.getUser().getId());
 
-        userManager.deleteUserAsSubjectFollower(event.getUser(),subjectIndex,event.getSubject());
-        subjectManager.deleteFollower(userIndex, event.getSubject(),event.getUser());*/
+        try {
+            String response = connection.send(JSONUtil.toJSON(event),"unfollowsubject");
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        connection = connectionManager.get(ConnectionManager.ServiceType.Subject,event.getSubject().getId());
+
+        try {
+            String response = connection.send(JSONUtil.toJSON(event),"unfollowsubject");
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 

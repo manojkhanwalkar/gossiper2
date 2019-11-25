@@ -256,6 +256,13 @@ public class ClientVerifier {
             verifier.followSubject(user1,subject1);
             verifier.followSubject(user2,subject2);
             verifier.followSubject(user1,subject3);
+
+
+            verifier.followSubject(user1,subject2);
+            verifier.followSubject(user2,subject3);
+
+            verifier.UnFollowSubject(user1,subject2);
+            verifier.UnFollowSubject(user2,subject3);
         }
 
 

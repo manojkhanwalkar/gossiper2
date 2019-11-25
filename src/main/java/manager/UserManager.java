@@ -303,14 +303,13 @@ public class UserManager {
 
     }
 
-    public void deleteUserAsSubjectFollower(User self , Integer subjectIndex, Subject subject)
+    public void deleteUserAsSubjectFollower(User self ,Subject subject)
     {
-    /*    int selfIndex = userids.get(self.getId());
-        followsSubject.removeEdge(selfIndex,subjectIndex);
+        followsSubject.removeEdge(self.getId(),subject.getId());
 
         UserRecord userRecord = manager.getUser(self.getId());
         userRecord.getFollowsSubject().remove(subject.getId());
-        manager.putUser(userRecord);*/
+        manager.putUser(userRecord);
 
 
     }

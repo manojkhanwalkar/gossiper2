@@ -97,10 +97,9 @@ public class UserDispatcher {
 
     public void dispatch(UnFollowSubject event)
     {
-       /*
 
-        userManager.deleteUserAsSubjectFollower(event.getUser(),subjectIndex,event.getSubject());
-        subjectManager.deleteFollower(userIndex, event.getSubject(),event.getUser()); */
+
+        userManager.deleteUserAsSubjectFollower(event.getUser(),event.getSubject());
 
     }
 
