@@ -265,6 +265,12 @@ public class ClientVerifier {
             verifier.UnFollowSubject(user2,subject3);
         }
 
+        FollowUser followUser = new FollowUser();
+        followUser.setSelf(new User("A1"));
+        followUser.setTarget(new User("A2"));
+
+        verifier.followUser(followUser);
+
 
         Users users = verifier.getUsers();
 
@@ -292,15 +298,11 @@ public class ClientVerifier {
 
 
 
-     /*   FollowUser followUser = new FollowUser();
-        followUser.setSelf(new User("A1"));
-        followUser.setTarget(new User("A2"));
-
-        verifier.followUser(followUser);
 
 
 
 
+/*
         for (int i=0;i<4;i++)
             verifier.deleteUser(new User("A"+ String.valueOf(i)));
 
