@@ -213,7 +213,36 @@ public class ClientVerifier {
         for (int i=0;i<4;i++)
             verifier.addUser(new User("A" + String.valueOf(i)));
 
-        FollowUser followUser = new FollowUser();
+
+        List.of("politics","technology","health").stream().forEach(s->{
+
+            Subject subject = new Subject(s);
+            verifier.addSubject(subject);
+
+        });
+
+        Post post = new Post();
+
+        for (int i=0;i<5;i++) {
+            post.setId(UUID.randomUUID().toString());
+            post.setMessage("New Post " + System.nanoTime());
+            post.setPoster(new User("A1"));
+            post.setSubject(new Subject("health"));
+
+            AddPost addPost = new AddPost();
+            addPost.setPost(post);
+            verifier.post(addPost);
+
+            RetrievePost retrievePost = new RetrievePost();
+            retrievePost.setUser(new User("A1"));
+            verifier.retrieve(retrievePost);
+
+
+
+        }
+
+
+     /*   FollowUser followUser = new FollowUser();
         followUser.setSelf(new User("A1"));
         followUser.setTarget(new User("A2"));
 
@@ -239,12 +268,6 @@ public class ClientVerifier {
             verifier.deleteUser(new User("A"+ String.valueOf(i)));
 
 
-        List.of("politics","technology","health").stream().forEach(s->{
-
-            Subject subject = new Subject(s);
-            verifier.addSubject(subject);
-
-        });
 
 
         Subjects subjects = verifier.getSubjects();
@@ -264,30 +287,12 @@ public class ClientVerifier {
 
         });
 
-        Post post = new Post();
 
-        for (int i=0;i<5;i++) {
-            post.setId(UUID.randomUUID().toString());
-            post.setMessage("New Post " + System.nanoTime());
-            post.setPoster(new User("A1"));
-            post.setSubject(new Subject("health"));
-
-            AddPost addPost = new AddPost();
-            addPost.setPost(post);
-            verifier.post(addPost);
-
-            RetrievePost retrievePost = new RetrievePost();
-            retrievePost.setUser(new User("A1"));
-            verifier.retrieve(retrievePost);
-
-
-
-        }
 
 
         DeletePost deletePost = new DeletePost();
         deletePost.setPost(post);
-        verifier.post(deletePost);
+        verifier.post(deletePost); */
 
 
 

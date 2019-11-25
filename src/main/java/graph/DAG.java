@@ -29,6 +29,11 @@ public class DAG<T> {
 
     }
 
+    public boolean existsNode(T key)
+    {
+        return adjacencyList.containsKey(key);
+    }
+
     public void deleteNode(T key)
     {
         adjacencyList.remove(key);

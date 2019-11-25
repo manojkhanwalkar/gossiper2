@@ -47,13 +47,15 @@ public class SubjectManager {
 
     public void addSubject(Subject subject)
     {
+        if (!followers.existsNode(subject.getId())) {
 
-        followers.addNode(subject.getId());
-              SubjectRecord subjectRecord = new SubjectRecord();
-              subjectRecord.setSubjectId(subject.getId());
-              subjectRecord.setName(subject.getName());
+            followers.addNode(subject.getId());
+            SubjectRecord subjectRecord = new SubjectRecord();
+            subjectRecord.setSubjectId(subject.getId());
+            subjectRecord.setName(subject.getName());
 
             manager.putSubject(subjectRecord);
+        }
 
     }
 

@@ -33,6 +33,8 @@ public class PostManager {
     public void addPost(Post post)
     {
         posts.put(post.getId(),post);
+
+        System.out.println(posts);
     }
 
     public Post getPost(String postId)
