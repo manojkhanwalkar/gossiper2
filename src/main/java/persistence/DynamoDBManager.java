@@ -256,8 +256,8 @@ public class DynamoDBManager {
 
         manager.printUsers();
 
-     //  manager.cleanAllRecords(UserRecord.class);
-       //manager.cleanAllRecords(SubjectRecord.class);
+       manager.cleanAllRecords(UserRecord.class);
+       manager.cleanAllRecords(SubjectRecord.class);
 
     }
 }

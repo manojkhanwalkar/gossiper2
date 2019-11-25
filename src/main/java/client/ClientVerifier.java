@@ -210,7 +210,12 @@ public class ClientVerifier {
 
         ClientVerifier verifier = new ClientVerifier();
 
-        for (int i=0;i<4;i++)
+
+
+
+
+
+       for (int i=0;i<4;i++)
             verifier.addUser(new User("A" + String.valueOf(i)));
 
 
@@ -233,9 +238,7 @@ public class ClientVerifier {
             addPost.setPost(post);
             verifier.post(addPost);
 
-           /* RetrievePost retrievePost = new RetrievePost();
-            retrievePost.setUser(new User("A1"));
-            verifier.retrieve(retrievePost);*/
+
 
 
 

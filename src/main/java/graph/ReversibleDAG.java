@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DAG<T> {
+public class ReversibleDAG<T> {
 
     Map<T,List<T>> adjacencyList = new HashMap<>();
 
-    public DAG()
+    public ReversibleDAG()
     {
 
     }
@@ -43,7 +43,7 @@ public class DAG<T> {
     {
 
         List<T> list  = adjacencyList.computeIfAbsent(src, key-> new ArrayList<>());
-        //adjacencyList.computeIfAbsent(tgt, key-> new ArrayList<>()); // so that tgt is a node in the graph .
+        adjacencyList.computeIfAbsent(tgt, key-> new ArrayList<>()); // so that tgt is a node in the graph .
 
 
         if (list.contains(tgt))
@@ -67,7 +67,7 @@ public class DAG<T> {
 
     }
 
-    public static<T> void print(DAG<T> dag)
+    public static<T> void print(ReversibleDAG<T> dag)
     {
             var adjacencyList = dag.getAdjacencyList();
 
@@ -80,10 +80,27 @@ public class DAG<T> {
 
     }
 
+    public static<T> ReversibleDAG<T> reverse(ReversibleDAG<T> dag)
+    {
+        ReversibleDAG rev = new ReversibleDAG();
+        for (int i=0;i<dag.getAdjacencyList().size();i++)
+        {
+            int tgt = i;
+            List<T> list = dag.getAdjacencyList().get(i);
+            for (int j=0;j<list.size();j++)
+            {
+                T src = list.get(j);
+                rev.addEdge(src,tgt);
+            }
+        }
+
+        return rev;
+    }
+
 
     public static void main(String[] args) {
 
-        DAG<Integer> dag = new DAG();
+        ReversibleDAG<Integer> dag = new ReversibleDAG();
         dag.addEdge(0,1);
         dag.addEdge(0,2);
         dag.addEdge(0,3);
@@ -92,11 +109,19 @@ public class DAG<T> {
         dag.addEdge(3,0);
         dag.addEdge(3,1);
 
-        DAG.print(dag);
+        ReversibleDAG.print(dag);
 
         System.out.println();
 
+        dag = ReversibleDAG.reverse(dag);
 
+        ReversibleDAG.print(dag);
+
+        System.out.println();
+
+        dag = ReversibleDAG.reverse(dag);
+
+        ReversibleDAG.print(dag);
 
 
 
