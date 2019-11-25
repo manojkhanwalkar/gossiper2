@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SubjectManager {
 
@@ -33,83 +34,56 @@ public class SubjectManager {
 
     }
 
-    Map<String,Integer> subjectids = new HashMap<>();
 
-    List<String> subjectidList = new ArrayList<>();
 
-    DAG followers = new DAG();
+    DAG<String> followers = new DAG();  // subject id ->  userids
 
     DynamoDBManager manager = new DynamoDBManager();
 
 
     public void recoverSubject(Subject subject) {
-        if (!subjectids.containsKey(subject.getId())) {
-
-            int subjectNum = subjectidList.size();
-            subjectidList.add(subject.getId());
-            subjectids.put(subject.getId(), subjectNum);
-
-        }
+        followers.addNode(subject.getId());
     }
 
     public void addSubject(Subject subject)
     {
-        if (!subjectids.containsKey(subject.getId()))
-        {
 
-            int subjectNum = subjectidList.size();
-            subjectidList.add(subject.getId());
-            subjectids.put(subject.getId(), subjectNum);
-
-
-
+        followers.addNode(subject.getId());
               SubjectRecord subjectRecord = new SubjectRecord();
               subjectRecord.setSubjectId(subject.getId());
               subjectRecord.setName(subject.getName());
 
             manager.putSubject(subjectRecord);
 
-
-            // persist the subject in database
-        }
     }
 
     public void deleteSubject(Subject subject)
     {
-        if (subjectids.containsKey(subject.getId()))
-        {
-            List<Integer> userIndices = followers.getEdges(subjectids.get(subject.getId()));
+           // List<String> userIndices = followers.getEdges(subject.getId());
 
-            subjectids.remove(subject.getId());
-            subjectidList.remove(subject.getId());
-
+           followers.deleteNode(subject.getId());
             // delete user in database
 
             SubjectRecord subjectRecord = manager.getSubject(subject.getId());
-            manager.removeSubject(subjectRecord);
+            if (subject!=null)
+                  manager.removeSubject(subjectRecord);
 
 
             //delete from userrecords for all users following the subject.
-            userIndices.stream().forEach(i->{
+     /*       userIndices.stream().forEach(i->{
 
                 UserManager userManager = UserManager.getInstance();
                 String userId = userManager.useridList.get(i);
                 UserRecord userRecord = manager.getUser(userId);
                 userRecord.getFollowsSubject().remove(subject.getId());
                 manager.putUser(userRecord);
-            });
+            }); */
 
 
             // let the user stay in the DAG as the next restart will remove it .
 
 
-        }
-    }
 
-
-    public Integer getSubjectIndex(String subjectId)
-    {
-        return subjectids.get(subjectId);
     }
 
 
@@ -132,25 +106,21 @@ public class SubjectManager {
 
     public void recoverFollowers(String subjectId, List<String> followedBy) {
 
-        int subjectToFollowIndex = subjectids.get(subjectId);
+
         followedBy.stream().forEach(f->{
 
-          UserManager userManager = UserManager.getInstance();
-          Integer userIndex = userManager.getUserIndex(f);
 
-          followers.addEdge(subjectToFollowIndex,userIndex);
+          followers.addEdge(subjectId,f);
 
         });
     }
 
 
-    public void addFollower(int selfIndex , Subject subjectToFollow, User user)
+    public void addFollower(Subject subjectToFollow, User user)
     {
 
-        int subjectToFollowIndex = subjectids.get(subjectToFollow.getId());
 
-
-        followers.addEdge(subjectToFollowIndex,selfIndex);
+        followers.addEdge(subjectToFollow.getId(),user.getId());
 
         SubjectRecord subjectRecord = manager.getSubject(subjectToFollow.getId());
         if (!subjectRecord.getFollowedBy().contains(user.getId()))
@@ -162,13 +132,12 @@ public class SubjectManager {
 
     }
 
-    public void deleteFollower(int selfIndex , Subject subjectToFollow, User user)
+    public void deleteFollower( Subject subjectToFollow, User user)
     {
 
-        int subjectToFollowIndex = subjectids.get(subjectToFollow.getId());
 
 
-        followers.removeEdge(subjectToFollowIndex,selfIndex);
+        followers.removeEdge(subjectToFollow.getId(),user.getId());
 
         SubjectRecord subjectRecord = manager.getSubject(subjectToFollow.getId());
 
@@ -182,7 +151,7 @@ public class SubjectManager {
     public Subjects getSubjects()
     {
         Subjects subjects = new Subjects();
-        subjects.setSubjects((ArrayList)subjectidList);
+        subjects.setSubjects((ArrayList)followers.getAdjacencyList().keySet().stream().collect(Collectors.toList()));
         return subjects;
     }
 

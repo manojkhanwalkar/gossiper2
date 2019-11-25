@@ -32,60 +32,43 @@ public class UserManager {
 
 
 
-PostManager postManager = PostManager.getInstance();
 
+    Set<String> userids = new HashSet<>();
 
-    Map<String,Integer> userids = new HashMap<>();
-
-    List<String> useridList = new ArrayList<>();
-
-    DAG followers = new DAG();
-    DAG follows = new DAG();
-    DAG followsSubject = new DAG();
+    DAG<String> followers = new DAG();
+    DAG<String> follows = new DAG();
+    DAG<String> followsSubject = new DAG();
 
     DynamoDBManager manager = new DynamoDBManager();
 
-    Map<Integer,List<String>> userPosts = new HashMap<>();
+    Map<String,List<String>> userPosts = new HashMap<>();
 
-    public Integer getUserIndex(User user) {
 
-        return userids.get(user.getId());
-    }
-
-    public Integer getUserIndex(String userId) {
-
-        return userids.get(userId);
-    }
 
 
 
     public Users getUsers() {
         Users users = new Users();
-        users.setUsers(useridList.stream().collect(Collectors.toCollection(ArrayList::new)));
+        users.setUsers(userids.stream().collect(Collectors.toCollection(ArrayList::new)));
         return users;
     }
 
     public void recoverUser(User user)
     {
-        if (!userids.containsKey(user.getId()))
+        if (!userids.contains(user.getId()))
         {
-
-            int userNum = useridList.size();
-            useridList.add(user.getId());
-            userids.put(user.getId(), userNum);
-
+            userids.add(user.getId());
         }
     }
 
 
     public void addUser(User user)
     {
-        if (!userids.containsKey(user.getId()))
+        if (!userids.contains(user.getId()))
         {
 
-            int userNum = useridList.size();
-            useridList.add(user.getId());
-            userids.put(user.getId(), userNum);
+
+            userids.add(user.getId());
 
             UserRecord userRecord = new UserRecord();
             userRecord.setUserId(user.getId());
@@ -116,25 +99,25 @@ PostManager postManager = PostManager.getInstance();
     public void deleteUser(User user)
     {
 
-        if (userids.containsKey(user.getId()))
+        if (userids.contains(user.getId()))
         {
-            List<Integer> subjectIndices = followsSubject.getEdges(userids.get(user.getId()));
+           // List<Integer> subjectIndices = followsSubject.getEdges(user.getId());
             userids.remove(user.getId());
-            useridList.remove(user.getId());
+
 
             UserRecord userRecord = manager.getUser(user.getId());
             manager.removeUser(userRecord);
 
             //TODO - process the follows and followed lists and remove the persistence from there
 
-            subjectIndices.stream().forEach(i->{
+         /*   subjectIndices.stream().forEach(i->{
 
                 SubjectManager subjectManager = SubjectManager.getInstance();
                 String subjectId = subjectManager.subjectidList.get(i);
                 SubjectRecord subjectRecord = manager.getSubject(subjectId);
                 subjectRecord.getFollowedBy().remove(user.getId());
                 manager.putSubject(subjectRecord);
-            });
+            });*/
 
 
 
@@ -151,7 +134,7 @@ PostManager postManager = PostManager.getInstance();
 
     public void recoverFollowersAndFollows(String selfId , List<String> followerIds, List<String> followsIds, List<String> followsSubjectIds)
     {
-        int selfIndex = userids.get(selfId);
+   /*     int selfIndex = userids.get(selfId);
         followerIds.stream().forEach(follower->{
             int other = userids.get(follower);
             followers.addEdge(other,selfIndex);
@@ -173,7 +156,7 @@ PostManager postManager = PostManager.getInstance();
 
         });
 
-
+*/
 
 
 
@@ -181,7 +164,7 @@ PostManager postManager = PostManager.getInstance();
 
     public void addFollower(User self , User userToFollow)
     {
-        int selfIndex = userids.get(self.getId());
+  /*      int selfIndex = userids.get(self.getId());
         int userToFollowIndex = userids.get(userToFollow.getId());
 
         follows.addEdge(selfIndex,userToFollowIndex);
@@ -200,7 +183,7 @@ PostManager postManager = PostManager.getInstance();
         else
         {
             System.out.println("Follower already exists " + self + "  " + userToFollow);
-        }
+        }*/
 
 
 
@@ -208,7 +191,7 @@ PostManager postManager = PostManager.getInstance();
 
     public void deleteFollower(User self , User userToFollow)
     {
-        Integer selfIndex = userids.get(self.getId());
+    /*    Integer selfIndex = userids.get(self.getId());
         if (selfIndex==null)
         {
             System.out.println("Relationship not found " + self + "  "+ userToFollow);
@@ -229,7 +212,7 @@ PostManager postManager = PostManager.getInstance();
         manager.putUser(userRecord);
 
         //TODO - get followed by users list and delete this user from their follows list
-
+*/
 
     }
 
@@ -242,20 +225,20 @@ PostManager postManager = PostManager.getInstance();
 
 
         SubjectManager subjectManager = SubjectManager.getInstance();
-        Integer subjectIndex = subjectManager.getSubjectIndex(subjectId);
 
-        Set<Integer> userIndices = new HashSet<>();
 
-        subjectManager.followers.getEdges(subjectIndex).stream().forEach(i->{
+        Set<String> userIndices = new HashSet<>();
+
+        subjectManager.followers.getEdges(subjectId).stream().forEach(i->{
 
             userIndices.add(i);
         });
 
 
 
-        int index = userids.get(posterUserId);
 
-        followers.getEdges(index).stream().forEach(num->{
+
+        followers.getEdges(posterUserId).stream().forEach(num->{
 
             userIndices.add(num);
 
@@ -285,16 +268,15 @@ PostManager postManager = PostManager.getInstance();
 
         PostIds postIds = new PostIds();
 
-        Integer index = userids.get(id);
-        if (index!=null) {
 
-            List<String> posts = userPosts.get(index);
+
+            List<String> posts = userPosts.get(id);
             if (posts != null) {
 
                 postIds.setPostIds((ArrayList) posts);
             }
 
-        }
+
 
 
         return postIds;
@@ -306,7 +288,7 @@ PostManager postManager = PostManager.getInstance();
 
     public void addUserAsSubjectFollower(User self , Integer subjectIndex, Subject subject)
     {
-        int selfIndex = userids.get(self.getId());
+       /* int selfIndex = userids.get(self.getId());
         followsSubject.addEdge(selfIndex,subjectIndex);
         UserRecord userRecord = manager.getUser(self.getId());
         if (!userRecord.getFollowsSubject().contains(subject.getId()))
@@ -314,18 +296,18 @@ PostManager postManager = PostManager.getInstance();
             userRecord.getFollowsSubject().add(subject.getId());
             manager.putUser(userRecord);
         }
-
+*/
 
     }
 
     public void deleteUserAsSubjectFollower(User self , Integer subjectIndex, Subject subject)
     {
-        int selfIndex = userids.get(self.getId());
+    /*    int selfIndex = userids.get(self.getId());
         followsSubject.removeEdge(selfIndex,subjectIndex);
 
         UserRecord userRecord = manager.getUser(self.getId());
         userRecord.getFollowsSubject().remove(subject.getId());
-        manager.putUser(userRecord);
+        manager.putUser(userRecord);*/
 
 
     }

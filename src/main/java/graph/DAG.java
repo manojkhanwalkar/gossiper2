@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DAG {
+public class DAG<T> {
 
-    Map<Integer,List<Integer>> adjacencyList = new HashMap<>();
+    Map<T,List<T>> adjacencyList = new HashMap<>();
 
     public DAG()
     {
@@ -17,22 +17,27 @@ public class DAG {
     }
 
     //TODO - return an immutable copy .
-    public  Map<Integer,List<Integer>> getAdjacencyList()
+    public  Map<T,List<T>> getAdjacencyList()
     {
         return  adjacencyList;
     }
 
-    public void addNode(int num)
+    public void addNode(T num)
     {
 
         adjacencyList.put(num,new ArrayList<>());
 
     }
 
-    public void addEdge(int src, int tgt)
+    public void deleteNode(T key)
+    {
+        adjacencyList.remove(key);
+    }
+
+    public void addEdge(T src, T tgt)
     {
 
-        List<Integer> list  = adjacencyList.computeIfAbsent(src, key-> new ArrayList<>());
+        List<T> list  = adjacencyList.computeIfAbsent(src, key-> new ArrayList<>());
         adjacencyList.computeIfAbsent(tgt, key-> new ArrayList<>()); // so that tgt is a node in the graph .
 
 
@@ -42,22 +47,22 @@ public class DAG {
             list.add(tgt);
     }
 
-    public void removeEdge(int src, int tgt)
+    public void removeEdge(T src, T tgt)
     {
-        List<Integer> list = adjacencyList.get(src);
+        List<T> list = adjacencyList.get(src);
 
         list.remove((Object)tgt);
     }
 
 
-    public List<Integer> getEdges(int node)
+    public List<T> getEdges(T node)
     {
 
             return adjacencyList.get(node); //TODO - return a immutable copy here , also Optional
 
     }
 
-    public static void print(DAG dag)
+    public static<T> void print(DAG<T> dag)
     {
             var adjacencyList = dag.getAdjacencyList();
 
@@ -70,16 +75,16 @@ public class DAG {
 
     }
 
-    public static DAG reverse(DAG dag)
+    public static<T> DAG<T> reverse(DAG<T> dag)
     {
         DAG rev = new DAG();
         for (int i=0;i<dag.getAdjacencyList().size();i++)
         {
             int tgt = i;
-            List<Integer> list = dag.getAdjacencyList().get(i);
+            List<T> list = dag.getAdjacencyList().get(i);
             for (int j=0;j<list.size();j++)
             {
-                int src = list.get(j);
+                T src = list.get(j);
                 rev.addEdge(src,tgt);
             }
         }
@@ -90,7 +95,7 @@ public class DAG {
 
     public static void main(String[] args) {
 
-        DAG dag = new DAG();
+        DAG<Integer> dag = new DAG();
         dag.addEdge(0,1);
         dag.addEdge(0,2);
         dag.addEdge(0,3);

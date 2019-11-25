@@ -14,9 +14,7 @@ public class User {
 @JsonProperty
      String name ;
 
-   /* List<User> followers = new ArrayList<>();
-    List<User> follows = new ArrayList<>();
-    List<Subject> followsSubject = new ArrayList<>();*/
+
 
     public String getId() {
         return id;

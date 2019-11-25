@@ -81,11 +81,10 @@ public class SubjectDispatcher {
         // add user to subject relationship in user manager
         // add subject to user relationship in subject manager
 
-        Integer subjectIndex = subjectManager.getSubjectIndex(event.getSubject().getId());
-        Integer userIndex = userManager.getUserIndex(event.getUser());
 
-        userManager.addUserAsSubjectFollower(event.getUser(),subjectIndex,event.getSubject());
-        subjectManager.addFollower(userIndex, event.getSubject(),event.getUser());
+
+       // userManager.addUserAsSubjectFollower(event.getUser(),subjectIndex,event.getSubject());
+        subjectManager.addFollower(event.getSubject(),event.getUser());
     }
 
     public void dispatch(FollowUser event)
@@ -97,11 +96,10 @@ public class SubjectDispatcher {
 
     public void dispatch(UnFollowSubject event)
     {
-        Integer subjectIndex = subjectManager.getSubjectIndex(event.getSubject().getId());
-        Integer userIndex = userManager.getUserIndex(event.getUser());
 
-        userManager.deleteUserAsSubjectFollower(event.getUser(),subjectIndex,event.getSubject());
-        subjectManager.deleteFollower(userIndex, event.getSubject(),event.getUser());
+
+      //  userManager.deleteUserAsSubjectFollower(event.getUser(),subjectIndex,event.getSubject());
+        subjectManager.deleteFollower(event.getSubject(),event.getUser());
 
     }
 
