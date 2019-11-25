@@ -95,10 +95,17 @@ public class SubjectManager {
 
         SubjectInfo subjectInfo = new SubjectInfo();
 
-        subjectInfo.setFollowedBy((ArrayList)subjectRecord.getFollowedBy());
-        subjectInfo.setName(subjectRecord.getName());
+        if (subjectRecord!=null) {
 
-        subjectInfo.setSubjectId(subjectRecord.getSubjectId());
+            if (subjectRecord.getFollowedBy()!=null) {
+
+                subjectInfo.setFollowedBy((ArrayList) subjectRecord.getFollowedBy());
+            }
+            subjectInfo.setName(subjectRecord.getName());
+
+            subjectInfo.setSubjectId(subjectRecord.getSubjectId());
+
+        }
 
 
 
