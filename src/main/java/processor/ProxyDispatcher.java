@@ -145,12 +145,6 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
         });
 
 
-
-
-
-
-       // userManager.addFollower(event.getSelf(),event.getTarget());
-
     }
 
     public void dispatch(UnFollowSubject event)
@@ -181,7 +175,18 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
 
     public void dispatch(UnFollowUser event)
     {
-       // userManager.deleteFollower(event.getSelf(),event.getTarget());
+
+        List<Connection> connections = connectionManager.get(ConnectionManager.ServiceType.User);
+
+        connections.stream().forEach(connection->{
+
+            try {
+                String response = connection.send(JSONUtil.toJSON(event),"unfollow");
+                System.out.println(response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 

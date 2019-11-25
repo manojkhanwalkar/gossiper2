@@ -272,6 +272,20 @@ public class ClientVerifier {
         verifier.followUser(followUser);
 
 
+         followUser = new FollowUser();
+        followUser.setSelf(new User("A1"));
+        followUser.setTarget(new User("A3"));
+
+        verifier.followUser(followUser);
+
+        UnFollowUser unFollowUser = new UnFollowUser();
+        unFollowUser.setSelf(new User("A1"));
+        unFollowUser.setTarget(new User("A3"));
+
+        verifier.unFollowUser(unFollowUser);
+
+
+
         Users users = verifier.getUsers();
 
         users.getUsers().stream().forEach(u->{
@@ -350,11 +364,6 @@ public class ClientVerifier {
 
 
 
-        UnFollowUser unFollowUser = new UnFollowUser();
-        unFollowUser.setSelf(user1);
-        unFollowUser.setTarget(user2);
-
-        verifier.unFollowUser(unFollowUser);
 
 
 

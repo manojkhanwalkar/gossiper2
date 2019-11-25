@@ -194,32 +194,33 @@ public class UserManager {
 
     }
 
+
     public void deleteFollower(User self , User userToFollow)
     {
-    /*    Integer selfIndex = userids.get(self.getId());
-        if (selfIndex==null)
+
+        if (userids.contains(self.getId()))
         {
-            System.out.println("Relationship not found " + self + "  "+ userToFollow);
-            return;
+            follows.removeEdge(self.getId(),userToFollow.getId());
+            UserRecord userRecord = manager.getUser(self.getId());
+            if (userRecord.getFollows().contains(userToFollow.getId())) {
+                userRecord.getFollows().remove(userToFollow.getId());
+                manager.putUser(userRecord);
+            }
         }
-        int userToFollowIndex = userids.get(userToFollow.getId());
 
-        follows.removeEdge(selfIndex,userToFollowIndex);
-        followers.removeEdge(userToFollowIndex,selfIndex);
-
-
-        UserRecord userRecord = manager.getUser(self.getId());
-        userRecord.getFollows().remove(userToFollow.getId());
-        manager.putUser(userRecord);
-
-        userRecord = manager.getUser(userToFollow.getId());
-        userRecord.getFollowedBy().remove(self.getId());
-        manager.putUser(userRecord);
-
-        //TODO - get followed by users list and delete this user from their follows list
-*/
+        if (userids.contains(userToFollow.getId()))
+        {
+            followers.removeEdge(userToFollow.getId(),self.getId());
+            UserRecord userRecord = manager.getUser(userToFollow.getId());
+            if (userRecord.getFollowedBy().contains(self.getId()))
+            {
+                userRecord.getFollowedBy().remove(self.getId());
+                manager.putUser(userRecord);
+            }
+        }
 
     }
+
 
 
     public void queuePost(Post post) {
