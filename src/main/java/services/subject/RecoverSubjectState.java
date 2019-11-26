@@ -11,35 +11,44 @@ import persistence.DynamoDBManager;
 import persistence.SubjectRecord;
 import persistence.UserRecord;
 
+import static persistence.DynamoDBManager.getHandle;
+
 public class RecoverSubjectState {
 
     DynamoDBManager dynamoDBManager = new DynamoDBManager();
+
+    String instance = System.getProperty("instance");
+
 
 
     public void recover()
     {
 
- /*       UserManager userManager = UserManager.getInstance();
         SubjectManager subjectManager = SubjectManager.getInstance();
+
 
         final AmazonDynamoDB ddb = getHandle();
         DynamoDBMapper mapper = new DynamoDBMapper(ddb);
 
 
 
-        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-        var scanResult = mapper.scan(UserRecord.class, scanExpression);
+        DynamoDBScanExpression  scanExpression = new DynamoDBScanExpression();
+        var scanResult = mapper.scan(SubjectRecord.class, scanExpression);
 
-        scanResult.stream().forEach(r -> {
-            User user = new User(r.getName());
-            //user.setName(r.getName());
-            userManager.recoverUser(user);
+        scanResult.stream().filter(r->
+                (instance.equalsIgnoreCase("subject1") && (Math.abs(r.getSubjectId().hashCode()%2)==0))
+                        || (instance.equalsIgnoreCase("subject2") && (Math.abs(r.getSubjectId().hashCode()%2)==1))
+
+
+
+        ).forEach(r->{
+            subjectManager.recover(r);
         });
 
 
 
-        scanExpression = new DynamoDBScanExpression();
-        var scanResult1 = mapper.scan(SubjectRecord.class, scanExpression);
+ /*
+
 
         scanResult1.stream().forEach(r -> {
             Subject subject = new Subject(r.getName());
@@ -50,12 +59,7 @@ public class RecoverSubjectState {
 
 
 
-        scanResult.stream().forEach(r->{
 
-
-            userManager.recoverFollowersAndFollows(r.getUserId(),r.getFollowedBy(),r.getFollows(),r.getFollowsSubject());});
-
-        //TODO - recover user -> subject DAG
 
         scanResult1.stream().forEach(r -> {
             Subject subject = new Subject(r.getName());

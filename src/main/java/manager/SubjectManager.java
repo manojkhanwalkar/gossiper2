@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 public class SubjectManager {
 
 
+
+
     static class SubjectManagerHolder
     {
         static SubjectManager instance = new SubjectManager();
@@ -40,10 +42,17 @@ public class SubjectManager {
 
     DynamoDBManager manager = new DynamoDBManager();
 
+    public void recover(SubjectRecord r) {
 
-    public void recoverSubject(Subject subject) {
-        followers.addNode(subject.getId());
+        System.out.println("Recovered " + r);
+
+        followers.addNode(r.getSubjectId());
+        r.getFollowedBy().stream().forEach(f->{
+
+            followers.addEdge(r.getSubjectId(),f);
+        });
     }
+
 
     public void addSubject(Subject subject)
     {
@@ -113,16 +122,6 @@ public class SubjectManager {
 
     }
 
-    public void recoverFollowers(String subjectId, List<String> followedBy) {
-
-
-        followedBy.stream().forEach(f->{
-
-
-          followers.addEdge(subjectId,f);
-
-        });
-    }
 
 
     public void addFollower(Subject subjectToFollow, User user)
