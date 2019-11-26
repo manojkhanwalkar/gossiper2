@@ -2,7 +2,7 @@ package data;
 
 import java.util.ArrayList;
 
-public class UserIds {
+public class UserIdsForPost {
 
     ArrayList<String> userIds = new ArrayList<>();
 

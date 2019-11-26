@@ -2,9 +2,6 @@ package processor;
 
 import data.*;
 import event.*;
-import manager.PostManager;
-import manager.SubjectManager;
-import manager.UserManager;
 import util.Connection;
 import util.ConnectionManager;
 import util.JSONUtil;
@@ -221,9 +218,35 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
         // get subject info
         // delete the subject
         // take the followed by list and for all users , send to user service to delete from the followsSubject list
-        Connection connection = connectionManager.get(ConnectionManager.ServiceType.Subject,event.getSubject().getId());
+        GetSubject getSubject = new GetSubject();
+        getSubject.setSubjectId(event.getSubject().getId());
+        SubjectInfo subjectInfo = dispatch(getSubject);
+
+        UserIdsForSubject evenIds = new UserIdsForSubject();
+        UserIdsForSubject oddIds = new UserIdsForSubject();
+
+        evenIds.setSubjectId(event.getSubject().getId());
+        oddIds.setSubjectId(event.getSubject().getId());
+
+        subjectInfo.getFollowedBy().stream().forEach(u->{
+
+            if (u.hashCode()%2==0)
+            {
+                evenIds.addUserId(u);
+            }
+            else
+            {
+                oddIds.addUserId(u);
+            }
+        });
+
 
         try {
+        List<Connection> userConnections = connectionManager.get(ConnectionManager.ServiceType.User);
+        userConnections.get(0).send(JSONUtil.toJSON(evenIds),"deleteSubject");
+        userConnections.get(1).send(JSONUtil.toJSON(oddIds),"deleteSubject");
+
+            Connection connection = connectionManager.get(ConnectionManager.ServiceType.Subject,event.getSubject().getId());
             String response = connection.send(JSONUtil.toJSON(event),"deleteSubject");
             System.out.println(response);
         } catch (Exception e) {
@@ -306,8 +329,8 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
 
         userIds.addAll(userInfo.getFollowedBy());
 
-        UserIds evenIds = new UserIds();
-        UserIds oddIds = new UserIds();
+        UserIdsForPost evenIds = new UserIdsForPost();
+        UserIdsForPost oddIds = new UserIdsForPost();
 
 
 

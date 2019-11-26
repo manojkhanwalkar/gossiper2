@@ -51,27 +51,12 @@ public class UserResource {
 
     }
 
-    @POST
-    @Timed
-    @Path("/createSubject")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String createSubject(AddSubject request) {
-
-
-        dispatcher.dispatch(request);
-
-        // return keyExchangeManager.processExchange(request);
-
-        return "Subject added";
-
-
-    }
 
     @POST
     @Timed
     @Path("/deleteSubject")
     @Produces(MediaType.APPLICATION_JSON)
-    public String deleteSubject(DeleteSubject request) {
+    public String deleteSubject(UserIdsForSubject request) {
 
 
         dispatcher.dispatch(request);
@@ -180,19 +165,6 @@ public class UserResource {
 
     }
 
-    @GET
-    @Timed
-    @Path("/subjects")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Subjects subjects() {
-
-
-        return dispatcher.retrieveSubjects();
-
-
-
-
-    }
 
 
     @POST
@@ -208,18 +180,7 @@ public class UserResource {
 
     }
 
-    @POST
-    @Timed
-    @Path("/subject")
-    @Produces(MediaType.APPLICATION_JSON)
-    public SubjectInfo subject(GetSubject subject) {
 
-
-        return dispatcher.dispatch(subject);
-
-
-
-    }
 
 
 
@@ -243,7 +204,7 @@ public class UserResource {
     @Timed
     @Path("/post")
     @Produces(MediaType.APPLICATION_JSON)
-    public String post(UserIds event) {
+    public String post(UserIdsForPost event) {
 
 
         dispatcher.dispatch(event);
@@ -253,21 +214,6 @@ public class UserResource {
 
 
     }
-
-
- /*   @GET
-    @Timed
-    @Path("/claimkey")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String exchange() {
-
-
-        return rsaKeyHolder.getPublicKeyStr();
-
-    }*/
-
-
-
 
 
 

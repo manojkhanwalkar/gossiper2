@@ -3,7 +3,6 @@ package manager;
 import data.*;
 import graph.DAG;
 import persistence.DynamoDBManager;
-import persistence.SubjectRecord;
 import persistence.UserRecord;
 
 import java.util.*;
@@ -219,11 +218,11 @@ public class UserManager {
 
 
 
-    public void queuePost(UserIds userIds) {
+    public void queuePost(UserIdsForPost userIdsForPost) {
 
-        Post post = userIds.getPost();
+        Post post = userIdsForPost.getPost();
 
-            userIds.getUserIds().stream().forEach(id->{
+            userIdsForPost.getUserIds().stream().forEach(id->{
 
                 List<String> posts = userPosts.get(id);
                 if (posts==null)
@@ -278,6 +277,22 @@ public class UserManager {
             userRecord.getFollowsSubject().add(subject.getId());
             manager.putUser(userRecord);
         }
+
+    }
+
+    public void deleteSubject(UserIdsForSubject event) {
+
+        event.getUserIds().stream().forEach(id->{
+
+            followsSubject.removeEdge(id,event.getSubjectId());
+            UserRecord userRecord = manager.getUser(id);
+            if (userRecord.getFollowsSubject().contains(event.getSubjectId()))
+            {
+                userRecord.getFollowsSubject().remove(event.getSubjectId());
+                manager.putUser(userRecord);
+            }
+
+        });
 
     }
 

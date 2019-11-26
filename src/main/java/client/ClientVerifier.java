@@ -202,6 +202,26 @@ public class ClientVerifier {
     }
 
 
+    private void users() throws Exception
+    {
+
+            Users users = getUsers();
+
+            users.getUsers().stream().forEach(u -> {
+
+                GetUser getUser = new GetUser();
+                getUser.setUserId(u);
+                try {
+                    getUser(getUser);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            });
+
+
+    }
+
 
 
     public static void main(String[] args) throws Exception {
@@ -294,21 +314,7 @@ public class ClientVerifier {
         verifier.unFollowUser(unFollowUser);
 
 
-
-        Users users = verifier.getUsers();
-
-        users.getUsers().stream().forEach(u->{
-
-            GetUser getUser = new GetUser();
-            getUser.setUserId(u);
-            try {
-                verifier.getUser(getUser);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        });
-
+       verifier.users();
 
         Subjects subjects = verifier.getSubjects();
 
@@ -320,7 +326,14 @@ public class ClientVerifier {
 
 
 
+        List.of("politics","technology","health").stream().forEach(s->{
 
+            Subject subject = new Subject(s);
+            verifier.deleteSubject(subject);
+
+        });
+
+       verifier.users();
 
 
 
@@ -334,12 +347,7 @@ public class ClientVerifier {
 
 
 
-        List.of("politics","technology","health").stream().forEach(s->{
 
-            Subject subject = new Subject(s);
-            verifier.deleteSubject(subject);
-
-        });
 
 
 

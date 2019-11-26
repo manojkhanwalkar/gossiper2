@@ -6,16 +6,12 @@ import manager.PostManager;
 import manager.SubjectManager;
 import manager.UserManager;
 
-import java.util.List;
-
 public class UserDispatcher {
 
 
     UserManager userManager = UserManager.getInstance();
 
-    PostManager postManager = PostManager.getInstance();
 
-    SubjectManager subjectManager = SubjectManager.getInstance();
 
     public Users dispatch()
     {
@@ -24,13 +20,9 @@ public class UserDispatcher {
     }
 
 
-    public Subjects retrieveSubjects()
-    {
 
-        return subjectManager.getSubjects();
-    }
 
-    public void dispatch(UserIds event)
+    public void dispatch(UserIdsForPost event)
     {
 
 
@@ -56,23 +48,12 @@ public class UserDispatcher {
     }
 
 
-
-    public SubjectInfo dispatch(GetSubject subject)
-    {
-        return subjectManager.getSubject(subject.getSubjectId());
-    }
-
     public void dispatch(AddUser event)
     {
         userManager.addUser(event.getUser());
     }
 
-    public void dispatch(DeletePost event)
-    {
 
-        postManager.deletePost(event.getPost());
-
-    }
 
     public void dispatch(DeleteUser event)
     {
@@ -110,15 +91,11 @@ public class UserDispatcher {
     }
 
 
-    public void dispatch(AddSubject event)
-    {
-        subjectManager.addSubject(event.getSubject());
-    }
 
 
-    public void dispatch(DeleteSubject event)
+    public void dispatch(UserIdsForSubject event)
     {
-        subjectManager.deleteSubject(event.getSubject());
+        userManager.deleteSubject(event);
     }
 
 
