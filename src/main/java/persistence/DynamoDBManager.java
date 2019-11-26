@@ -17,7 +17,7 @@ import java.util.List;
 
 public class DynamoDBManager {
 
-    private AmazonDynamoDB getHandle()
+    public static AmazonDynamoDB getHandle()
     {
         AmazonDynamoDB ddb = AmazonDynamoDBClientBuilder.standard()
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", "us-west-2"))
@@ -122,55 +122,6 @@ public class DynamoDBManager {
         printAllRecords(SubjectRecord.class);
     }
 
-    public void recover()
-    {
-
-        UserManager userManager = UserManager.getInstance();
-        SubjectManager subjectManager = SubjectManager.getInstance();
-
-        final AmazonDynamoDB ddb = getHandle();
-        DynamoDBMapper mapper = new DynamoDBMapper(ddb);
-
-
-
-            DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-            var scanResult = mapper.scan(UserRecord.class, scanExpression);
-
-            scanResult.stream().forEach(r -> {
-                User user = new User(r.getName());
-                //user.setName(r.getName());
-                userManager.recoverUser(user);
-            });
-
-
-
-         scanExpression = new DynamoDBScanExpression();
-        var scanResult1 = mapper.scan(SubjectRecord.class, scanExpression);
-
-        scanResult1.stream().forEach(r -> {
-            Subject subject = new Subject(r.getName());
-            //user.setName(r.getName());
-            subjectManager.recoverSubject(subject);
-        });
-
-
-
-
-        scanResult.stream().forEach(r->{
-
-
-            userManager.recoverFollowersAndFollows(r.getUserId(),r.getFollowedBy(),r.getFollows(),r.getFollowsSubject());});
-
-        //TODO - recover user -> subject DAG
-
-        scanResult1.stream().forEach(r -> {
-            Subject subject = new Subject(r.getName());
-            //user.setName(r.getName());
-            subjectManager.recoverFollowers(r.getSubjectId(),r.getFollowedBy());
-        });
-
-
-    }
 
     public void cleanAllRecords(Class<?> clazz)
     {

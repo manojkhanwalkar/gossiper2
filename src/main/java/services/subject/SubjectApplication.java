@@ -35,10 +35,8 @@ public class SubjectApplication extends Application<SubjectConfiguration> {
    //     DiscoveryLifeCycle myManagedObject = new DiscoveryLifeCycle(Constants.BureauServiceUrl,Constants.BureauServiceType, Constants.BureauServiceHealthUrl);
      //   environment.lifecycle().manage(myManagedObject);
 
-
-        DynamoDBManager dynamoDBManager = new DynamoDBManager();
-
-        dynamoDBManager.recover();
+        RecoverSubjectState recoverUserState = new RecoverSubjectState();
+        recoverUserState.recover();
 
 
         environment.jersey().register(resource);

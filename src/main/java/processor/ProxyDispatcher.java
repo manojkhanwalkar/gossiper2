@@ -88,6 +88,12 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
 
     public void dispatch(DeleteUser event)
     {
+        //TODO
+        // get userinfo about the user
+        // delete user
+        // take the userlist of follows and send it to user services for those users to delete from followed list
+        // take the userlist of followed and send it to user services for those users to delete from follows list
+        // take the followsSubject list and send it to subject services to delete it from subjects followedby list
 
         Connection connection = connectionManager.get(ConnectionManager.ServiceType.User,event.getUser().getId());
 
@@ -211,6 +217,10 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
     public void dispatch(DeleteSubject event)
     {
 
+        // TODO
+        // get subject info
+        // delete the subject
+        // take the followed by list and for all users , send to user service to delete from the followsSubject list
         Connection connection = connectionManager.get(ConnectionManager.ServiceType.Subject,event.getSubject().getId());
 
         try {

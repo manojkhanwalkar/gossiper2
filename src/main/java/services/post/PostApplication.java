@@ -36,10 +36,6 @@ public class PostApplication extends Application<PostConfiguration> {
      //   environment.lifecycle().manage(myManagedObject);
 
 
-        DynamoDBManager dynamoDBManager = new DynamoDBManager();
-
-        dynamoDBManager.recover();
-
 
         environment.jersey().register(resource);
        // environment.healthChecks().register("APIHealthCheck", new AppHealthCheck());

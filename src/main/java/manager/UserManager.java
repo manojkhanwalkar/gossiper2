@@ -53,12 +53,31 @@ public class UserManager {
         return users;
     }
 
-    public void recoverUser(User user)
-    {
-        if (!userids.contains(user.getId()))
+
+    public void recover(UserRecord r) {
+
+        System.out.println("User record recovered for " + r);
+        if (!userids.contains(r.getUserId()))
         {
-            userids.add(user.getId());
+            userids.add(r.getUserId());
         }
+
+        r.getFollowedBy().stream().forEach(follower->{
+            followers.addEdge(follower,r.getUserId());
+
+        });
+
+        r.getFollows().stream().forEach(follow->{
+
+            follows.addEdge(r.getUserId(),follow);
+        });
+
+        r.getFollowsSubject().stream().forEach(subject->{
+            followsSubject.addEdge(r.getUserId(),subject);
+
+        });
+
+
     }
 
 
@@ -140,29 +159,6 @@ public class UserManager {
 
     public void recoverFollowersAndFollows(String selfId , List<String> followerIds, List<String> followsIds, List<String> followsSubjectIds)
     {
-   /*     int selfIndex = userids.get(selfId);
-        followerIds.stream().forEach(follower->{
-            int other = userids.get(follower);
-            followers.addEdge(other,selfIndex);
-
-        });
-
-        followsIds.stream().forEach(follow->{
-
-            int other = userids.get(follow);
-
-            follows.addEdge(selfIndex,other);
-
-        });
-
-        followsSubjectIds.stream().forEach(f->{
-            SubjectManager subjectManager = SubjectManager.getInstance();
-            Integer subjectIndex = subjectManager.getSubjectIndex(f);
-            followsSubject.addEdge(selfIndex,subjectIndex);
-
-        });
-
-*/
 
 
 

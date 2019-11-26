@@ -35,10 +35,9 @@ public class UserApplication extends Application<UserConfiguration> {
    //     DiscoveryLifeCycle myManagedObject = new DiscoveryLifeCycle(Constants.BureauServiceUrl,Constants.BureauServiceType, Constants.BureauServiceHealthUrl);
      //   environment.lifecycle().manage(myManagedObject);
 
+        RecoverUserState recoverUserState = new RecoverUserState();
+        recoverUserState.recover();
 
-        DynamoDBManager dynamoDBManager = new DynamoDBManager();
-
-        dynamoDBManager.recover();
 
 
         environment.jersey().register(resource);
