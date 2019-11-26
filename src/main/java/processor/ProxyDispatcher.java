@@ -9,7 +9,9 @@ import util.Connection;
 import util.ConnectionManager;
 import util.JSONUtil;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class ProxyDispatcher {
@@ -266,6 +268,10 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
     public void dispatch(AddPost event)
     {
 
+        // get UserInfo and extract followedBy from there
+        // get SubjectInfo and extract followedBy from there
+        // make a set of userids and send that to both user services . Each will add them to list of the users they manage.
+
         Connection connection = connectionManager.get(ConnectionManager.ServiceType.Post,event.getPost().getId());
 
         try {
@@ -275,15 +281,57 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
             e.printStackTrace();
         }
 
-        //TODO - send to both user services for them to process the post
+        GetSubject getSubject = new GetSubject();
+        getSubject.setSubjectId(event.getPost().getSubject().getId());
 
-        //      postManager.addPost(event.getPost());
+        SubjectInfo subjectInfo = dispatch(getSubject);
 
-        //     userManager.queuePost(event.getPost());
+        GetUser getUser = new GetUser();
+        getUser.setUserId(event.getPost().getPoster().getId());
+
+        UserInfo userInfo = dispatch(getUser);
+
+        Set<String> userIds = new HashSet<>();
+        userIds.addAll(subjectInfo.getFollowedBy());
+
+        userIds.addAll(userInfo.getFollowedBy());
+
+        UserIds evenIds = new UserIds();
+        UserIds oddIds = new UserIds();
+
+
+
+        // split into two parts
+
+        userIds.stream().forEach(id->{
+
+            if (id.hashCode()%2==0)
+            {
+                evenIds.addUserId(id);
+            }
+            else
+            {
+                oddIds.addUserId(id);
+            }
+        });
+
+
+        List<Connection> connections = connectionManager.get(ConnectionManager.ServiceType.User);
+        evenIds.setPost(event.getPost());
+        oddIds.setPost(event.getPost());
+
+        try {
+            connections.get(0).send(JSONUtil.toJSON(evenIds),"post");
+            connections.get(1).send(JSONUtil.toJSON(oddIds),"post");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public Posts dispatch(RetrievePost event)
     {
+        System.out.println(event);
 
         try {
             // find which instance has the user and get post ids from that instance .
@@ -294,6 +342,8 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
             Connection connection = connectionManager.get(ConnectionManager.ServiceType.User,event.getUser().getId());
 
             String response = connection.send(JSONUtil.toJSON(event),"retrieve");
+
+            System.out.println(response);
 
             PostIds postIds = (PostIds) JSONUtil.fromJSON(response,PostIds.class);
 
@@ -331,6 +381,8 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
 
 
             Posts posts = Posts.combine(evenPosts,oddPosts);
+
+            System.out.println(posts);
 
 
             return posts;

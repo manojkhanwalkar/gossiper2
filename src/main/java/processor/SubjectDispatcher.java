@@ -31,13 +31,13 @@ public class SubjectDispatcher {
         return subjectManager.getSubjects();
     }
 
-    public void dispatch(AddPost event)
+  /*  public void dispatch(AddPost event)
     {
 
         postManager.addPost(event.getPost());
 
         userManager.queuePost(event.getPost());
-    }
+    }*/
 
  /*   public Posts dispatch(RetrievePost event)
     {

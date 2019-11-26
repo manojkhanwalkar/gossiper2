@@ -260,6 +260,7 @@ public class GossiperProxyResource {
     public Posts post(RetrievePost retrievePost) {
 
 
+        System.out.println("retrieve call");
        return  dispatcher.dispatch(retrievePost);
 
 

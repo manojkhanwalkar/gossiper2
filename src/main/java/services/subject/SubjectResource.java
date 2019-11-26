@@ -221,7 +221,7 @@ public class SubjectResource {
 
     }
 
-    @POST
+ /*   @POST
     @Timed
     @Path("/post")
     @Produces(MediaType.APPLICATION_JSON)
@@ -234,7 +234,7 @@ public class SubjectResource {
 
 
 
-    }
+    }*/
 
 
     @POST

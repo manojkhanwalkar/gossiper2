@@ -30,16 +30,17 @@ public class UserDispatcher {
         return subjectManager.getSubjects();
     }
 
-    public void dispatch(AddPost event)
+    public void dispatch(UserIds event)
     {
 
 
-        userManager.queuePost(event.getPost());
+        userManager.queuePost(event);
     }
 
     public PostIds dispatch(RetrievePost event)
     {
 
+        System.out.println(event);
         PostIds postIds = userManager.getPostsForUser(event.getUser().getId());
         if (postIds==null)
         {

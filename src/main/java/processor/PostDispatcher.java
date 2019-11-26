@@ -22,6 +22,8 @@ public class PostDispatcher {
     public Posts dispatch(PostIds event)
     {
 
+        System.out.println(event);
+
         Posts posts = new Posts();
 
         event.getPostIds().stream().forEach(id->{
@@ -31,7 +33,11 @@ public class PostDispatcher {
                posts.addPost(post);
         });
 
-       return posts;
+       System.out.println(posts);
+
+        return posts;
+
+
 
     }
 

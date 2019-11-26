@@ -239,6 +239,22 @@ public class UserResource {
     }
 
 
+    @POST
+    @Timed
+    @Path("/post")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String post(UserIds event) {
+
+
+        dispatcher.dispatch(event);
+
+        return "posted";
+
+
+
+    }
+
+
  /*   @GET
     @Timed
     @Path("/claimkey")

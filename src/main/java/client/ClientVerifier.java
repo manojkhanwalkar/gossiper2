@@ -228,21 +228,7 @@ public class ClientVerifier {
 
         Post post = new Post();
 
-        for (int i=0;i<5;i++) {
-            post.setId(UUID.randomUUID().toString());
-            post.setMessage("New Post " + System.nanoTime());
-            post.setPoster(new User("A1"));
-            post.setSubject(new Subject("health"));
 
-            AddPost addPost = new AddPost();
-            addPost.setPost(post);
-            verifier.post(addPost);
-
-
-
-
-
-        }
 
         {
             //System.out.println(subjects);
@@ -266,10 +252,33 @@ public class ClientVerifier {
         }
 
         FollowUser followUser = new FollowUser();
-        followUser.setSelf(new User("A1"));
-        followUser.setTarget(new User("A2"));
+        followUser.setSelf(new User("A2"));
+        followUser.setTarget(new User("A1"));
 
         verifier.followUser(followUser);
+
+        for (int i=0;i<5;i++) {
+            post.setId(UUID.randomUUID().toString());
+            post.setMessage("New Post " + System.nanoTime());
+            post.setPoster(new User("A1"));
+            post.setSubject(new Subject("health"));
+
+            AddPost addPost = new AddPost();
+            addPost.setPost(post);
+            verifier.post(addPost);
+
+
+
+
+
+        }
+
+
+
+        RetrievePost retrievePost = new RetrievePost();
+        retrievePost.setUser(new User("A2"));
+
+        verifier.retrieve(retrievePost);
 
 
          followUser = new FollowUser();

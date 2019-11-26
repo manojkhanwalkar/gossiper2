@@ -223,47 +223,24 @@ public class UserManager {
 
 
 
-    public void queuePost(Post post) {
+    public void queuePost(UserIds userIds) {
 
-        String posterUserId = post.getPoster().getId();
+        Post post = userIds.getPost();
 
-        String subjectId = post.getSubject().getId();
+            userIds.getUserIds().stream().forEach(id->{
 
+                List<String> posts = userPosts.get(id);
+                if (posts==null)
+                {
+                    posts = new ArrayList<>();
+                    userPosts.put(id,posts);
+                }
 
-        SubjectManager subjectManager = SubjectManager.getInstance();
-
-
-        Set<String> userIndices = new HashSet<>();
-
-        subjectManager.followers.getEdges(subjectId).stream().forEach(i->{
-
-            userIndices.add(i);
-        });
+                posts.add(post.getId());
 
 
+            });
 
-
-
-        followers.getEdges(posterUserId).stream().forEach(num->{
-
-            userIndices.add(num);
-
-        });
-
-
-        // common users across user followers and subject followers . now process that set .
-
-        userIndices.stream().forEach(num->{
-            List<String> posts = userPosts.get(num);
-            if (posts==null)
-            {
-                posts = new ArrayList<>();
-                userPosts.put(num,posts);
-            }
-
-            posts.add(post.getId());
-
-        });
 
 
     }
@@ -271,6 +248,10 @@ public class UserManager {
 
 
     public PostIds getPostsForUser(String id) {
+
+        System.out.println("User is " + id);
+
+        System.out.println(userPosts);
 
         PostIds postIds = new PostIds();
 
