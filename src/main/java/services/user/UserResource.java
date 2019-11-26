@@ -68,6 +68,22 @@ public class UserResource {
 
     }
 
+    @POST
+    @Timed
+    @Path("/deleteFollowsAndFollowedForUser")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deleteUser(UserIdsForUser request) {
+
+
+        dispatcher.dispatch(request);
+
+        // return keyExchangeManager.processExchange(request);
+
+        return "User deleted";
+
+
+    }
+
 
     @POST
     @Timed

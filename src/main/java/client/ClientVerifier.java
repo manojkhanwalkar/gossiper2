@@ -337,6 +337,9 @@ public class ClientVerifier {
 
 
 
+            verifier.deleteUser(new User("A1"));
+
+        verifier.users();
 
 /*
         for (int i=0;i<4;i++)

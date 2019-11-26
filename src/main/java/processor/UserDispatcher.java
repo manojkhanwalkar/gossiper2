@@ -99,6 +99,8 @@ public class UserDispatcher {
     }
 
 
+    public void dispatch(UserIdsForUser request) {
 
-
+        userManager.deleteFollowsAndFollower(request);
+    }
 }

@@ -35,21 +35,7 @@ public class SubjectResource {
     }
 
 
-    @POST
-    @Timed
-    @Path("/create")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String createUser(AddUser request) {
 
-
-        dispatcher.dispatch(request);
-
-       // return keyExchangeManager.processExchange(request);
-
-        return "User added";
-
-
-    }
 
     @POST
     @Timed
@@ -88,7 +74,7 @@ public class SubjectResource {
     @Timed
     @Path("/delete")
     @Produces(MediaType.APPLICATION_JSON)
-    public String deleteUser(DeleteUser request) {
+    public String deleteUser(UserIdsForSubject request) {
 
 
         dispatcher.dispatch(request);
@@ -101,21 +87,6 @@ public class SubjectResource {
     }
 
 
-    @POST
-    @Timed
-    @Path("/follow")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String follow(FollowUser request) {
-
-
-        dispatcher.dispatch(request);
-
-        // return keyExchangeManager.processExchange(request);
-
-        return "Follower added";
-
-
-    }
 
 
     @POST
@@ -136,22 +107,6 @@ public class SubjectResource {
 
     @POST
     @Timed
-    @Path("/unfollow")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String unfollow(UnFollowUser request) {
-
-
-        dispatcher.dispatch(request);
-
-        // return keyExchangeManager.processExchange(request);
-
-        return "Follower removed";
-
-
-    }
-
-    @POST
-    @Timed
     @Path("/unfollowsubject")
     @Produces(MediaType.APPLICATION_JSON)
     public String unfollowSubject(UnFollowSubject request) {
@@ -166,19 +121,7 @@ public class SubjectResource {
 
     }
 
-    @GET
-    @Timed
-    @Path("/users")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Users users() {
 
-
-        return dispatcher.dispatch();
-
-
-
-
-    }
 
     @GET
     @Timed
@@ -195,18 +138,7 @@ public class SubjectResource {
     }
 
 
-    @POST
-    @Timed
-    @Path("/user")
-    @Produces(MediaType.APPLICATION_JSON)
-    public UserInfo user(GetUser user) {
 
-
-        return dispatcher.dispatch(user);
-
-
-
-    }
 
     @POST
     @Timed
@@ -220,50 +152,6 @@ public class SubjectResource {
 
 
     }
-
- /*   @POST
-    @Timed
-    @Path("/post")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String post(AddPost post) {
-
-
-         dispatcher.dispatch(post);
-
-         return "posted";
-
-
-
-    }*/
-
-
-    @POST
-    @Timed
-    @Path("/deletepost")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String post(DeletePost post) {
-
-
-        dispatcher.dispatch(post);
-
-        return "post deleted";
-
-
-
-    }
-
-
-
- /*   @GET
-    @Timed
-    @Path("/claimkey")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String exchange() {
-
-
-        return rsaKeyHolder.getPublicKeyStr();
-
-    }*/
 
 
 

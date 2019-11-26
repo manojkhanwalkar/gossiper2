@@ -1,9 +1,6 @@
 package manager;
 
-import data.Subject;
-import data.SubjectInfo;
-import data.Subjects;
-import data.User;
+import data.*;
 import graph.DAG;
 import persistence.DynamoDBManager;
 import persistence.SubjectRecord;
@@ -137,6 +134,23 @@ public class SubjectManager {
             manager.putSubject(subjectRecord);
         }
 
+
+    }
+
+    public void deleteUser(UserIdsForSubject event) {
+
+
+        event.getUserIds().stream().forEach(id->{
+
+            followers.removeEdge(event.getSubjectId(),id);
+
+            SubjectRecord subjectRecord = manager.getSubject(event.getSubjectId());
+
+            subjectRecord.getFollowedBy().remove(id);
+            manager.putSubject(subjectRecord);
+
+
+        });
 
     }
 

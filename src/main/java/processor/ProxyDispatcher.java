@@ -85,16 +85,85 @@ ConnectionManager connectionManager = ConnectionManager.getInstance();
 
     public void dispatch(DeleteUser event)
     {
-        //TODO
-        // get userinfo about the user
-        // delete user
         // take the userlist of follows and send it to user services for those users to delete from followed list
         // take the userlist of followed and send it to user services for those users to delete from follows list
         // take the followsSubject list and send it to subject services to delete it from subjects followedby list
+        try {
 
+        GetUser getUser = new GetUser();
+        getUser.setUserId(event.getUser().getId());
+
+        UserInfo userInfo = dispatch(getUser);
+
+        { // delete user from subject in subject service
+            SubjectIdsForUser evenIds = new SubjectIdsForUser();
+            SubjectIdsForUser oddIds = new SubjectIdsForUser();
+            evenIds.setUserId(event.getUser().getId());
+            oddIds.setUserId(event.getUser().getId());
+
+            userInfo.getFollowsSubject().stream().forEach(sid -> {
+                if(sid.hashCode()%2==0)
+                {
+                    evenIds.addSubjectId(sid);
+                }
+                else
+                {
+                    oddIds.addSubjectId(sid);
+                }
+
+            });
+
+            List<Connection> subjectConnections = connectionManager.get(ConnectionManager.ServiceType.Subject);
+            subjectConnections.get(0).send(JSONUtil.toJSON(evenIds),"delete");
+            subjectConnections.get(1).send(JSONUtil.toJSON(oddIds),"delete");
+
+        }
+
+        // delete follows and followedby
+
+            { // delete user from subject in subject service
+                UserIdsForUser evenIds = new UserIdsForUser();
+                UserIdsForUser oddIds = new UserIdsForUser();
+                evenIds.setUserId(event.getUser().getId());
+                oddIds.setUserId(event.getUser().getId());
+
+                userInfo.getFollows().stream().forEach(sid -> {
+                    if(sid.hashCode()%2==0)
+                    {
+                        evenIds.addFollows(sid);
+                    }
+                    else
+                    {
+                        oddIds.addFollows(sid);
+                    }
+
+                });
+
+                userInfo.getFollowedBy().stream().forEach(sid -> {
+                    if(sid.hashCode()%2==0)
+                    {
+                        evenIds.addFollowedBy(sid);
+                    }
+                    else
+                    {
+                        oddIds.addFollowedBy(sid);
+                    }
+
+                });
+
+
+
+                List<Connection> subjectConnections = connectionManager.get(ConnectionManager.ServiceType.User);
+                subjectConnections.get(0).send(JSONUtil.toJSON(evenIds),"deleteFollowsAndFollowedForUser");
+                subjectConnections.get(1).send(JSONUtil.toJSON(oddIds),"deleteFollowsAndFollowedForUser");
+
+            }
+
+
+
+        // delete user
         Connection connection = connectionManager.get(ConnectionManager.ServiceType.User,event.getUser().getId());
 
-        try {
             String response = connection.send(JSONUtil.toJSON(event),"delete");
             System.out.println(response);
         } catch (Exception e) {

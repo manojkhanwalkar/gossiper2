@@ -12,7 +12,6 @@ public class UserManager {
 
 
 
-
     static class UserManagerHolder
     {
         static UserManager instance = new UserManager();
@@ -132,20 +131,6 @@ public class UserManager {
             UserRecord userRecord = manager.getUser(user.getId());
             manager.removeUser(userRecord);
 
-            //TODO - process the follows and followed lists and remove the persistence from there
-
-         /*   subjectIndices.stream().forEach(i->{
-
-                SubjectManager subjectManager = SubjectManager.getInstance();
-                String subjectId = subjectManager.subjectidList.get(i);
-                SubjectRecord subjectRecord = manager.getSubject(subjectId);
-                subjectRecord.getFollowedBy().remove(user.getId());
-                manager.putSubject(subjectRecord);
-            });*/
-
-
-
-            // let the user stay in the DAG as the next restart will remove it .
 
 
         }
@@ -156,12 +141,6 @@ public class UserManager {
     }
 
 
-    public void recoverFollowersAndFollows(String selfId , List<String> followerIds, List<String> followsIds, List<String> followsSubjectIds)
-    {
-
-
-
-    }
 
     public void addFollower(User self , User userToFollow)
     {
@@ -214,6 +193,28 @@ public class UserManager {
             }
         }
 
+    }
+
+
+    public void deleteFollowsAndFollower(UserIdsForUser request) {
+
+        request.getFollowedBy().stream().forEach(id->{
+            follows.removeEdge(id,request.getUserId());
+            UserRecord userRecord = manager.getUser(id);
+            userRecord.getFollows().remove(request.getUserId());
+            manager.putUser(userRecord);
+
+        });
+
+        request.getFollows().stream().forEach(id->{
+            followers.removeEdge(id,request.getUserId());
+            UserRecord userRecord = manager.getUser(id);
+            userRecord.getFollowedBy().remove(request.getUserId());
+            manager.putUser(userRecord);
+
+
+
+        });
     }
 
 
