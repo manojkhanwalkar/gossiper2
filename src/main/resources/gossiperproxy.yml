@@ -1,21 +1,25 @@
 template: Hello, %s!
 defaultName: Stranger
 
+# Keystore location and password come from the environment (GOSSIPER_KEYSTORE_PATH,
+# GOSSIPER_KEYSTORE_PASSWORD); startup fails if either is unset.
 server:
   #  softNofileLimit: 1000
   #  hardNofileLimit: 1000
   applicationConnectors:
     - type: https
       port: 8180
-      keyStorePath: /home/manoj/IdeaProjects/securitytest/src/main/resources/mytestkey.jks
-      keyStorePassword: password
+      keyStorePath: ${GOSSIPER_KEYSTORE_PATH}
+      keyStorePassword: ${GOSSIPER_KEYSTORE_PASSWORD}
     #this requires the alpn-boot library on the JVM's boot classpath
     #- type: h2
     #  port: 8445
     #  keyStorePath: example.keystore
     #  keyStorePassword: example
   adminConnectors:
+    # admin endpoints (metrics, thread dumps, tasks) are unauthenticated: keep them on loopback
     - type: https
+      bindHost: 127.0.0.1
       port: 8181
-      keyStorePath: /home/manoj/IdeaProjects/securitytest/src/main/resources/mytestkey.jks
-      keyStorePassword: password
+      keyStorePath: ${GOSSIPER_KEYSTORE_PATH}
+      keyStorePassword: ${GOSSIPER_KEYSTORE_PASSWORD}

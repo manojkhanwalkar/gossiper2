@@ -2,7 +2,7 @@ package manager;
 
 import data.Post;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 
 public class PostManager {
@@ -28,13 +28,12 @@ public class PostManager {
 
     //TODO - implement a TTL cache that cleans up older posts
 
-    Map<String, Post> posts = new HashMap<>();
+    Map<String, Post> posts = new ConcurrentHashMap<>();
 
     public void addPost(Post post)
     {
         posts.put(post.getId(),post);
 
-        System.out.println(posts);
     }
 
     public Post getPost(String postId)
