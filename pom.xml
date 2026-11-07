@@ -9,11 +9,26 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <dropwizard.version>1.3.14</dropwizard.version>
+        <dropwizard.version>1.3.29</dropwizard.version>
+        <!-- jackson-databind 2.12.7.1: fixes CVE-2020-36518, CVE-2022-42003, CVE-2022-42004 -->
+        <jackson.bom.version>2.12.7.20221012</jackson.bom.version>
         <!--       <maven.compiler.target>1.8</maven.compiler.target>
                <maven.compiler.source>1.8</maven.compiler.source> -->
     </properties>
 
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- keep every Jackson module on one patched version -->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -43,8 +58,8 @@
 
         <dependency>
             <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk</artifactId>
-            <version>1.11.327</version>
+            <artifactId>aws-java-sdk-dynamodb</artifactId>
+            <version>1.12.797</version>
         </dependency>
 
         <dependency>
@@ -59,11 +74,6 @@
             <version>1.1.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.3.0</version>
-        </dependency>
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-core</artifactId>
@@ -85,20 +95,18 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.10.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor -->
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-cbor</artifactId>
-            <version>2.10.0</version>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -106,35 +114,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>19.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.6</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
-        <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk15on</artifactId>
-            <version>1.64</version>
-        </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on -->
-        <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcpkix-jdk15on</artifactId>
-            <version>1.64</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.bitbucket.b_c/jose4j -->
-        <dependency>
-            <groupId>org.bitbucket.b_c</groupId>
-            <artifactId>jose4j</artifactId>
-            <version>0.7.0</version>
+            <version>32.1.3-jre</version>
         </dependency>
 
 

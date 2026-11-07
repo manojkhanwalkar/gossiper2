@@ -2,6 +2,8 @@ package services.proxy;
 
 
 import io.dropwizard.Application;
+import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
+import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import persistence.DynamoDBManager;
@@ -20,6 +22,11 @@ public class GossiperProxyApplication extends Application<GossiperProxyConfigura
 
     @Override
     public void initialize(Bootstrap<GossiperProxyConfiguration> bootstrap) {
+        // Resolve ${ENV_VAR} placeholders in the YAML config (secrets stay out of the repo).
+        // Strict mode: startup fails if a referenced variable is not set.
+        bootstrap.setConfigurationSourceProvider(new SubstitutingSourceProvider(
+                bootstrap.getConfigurationSourceProvider(),
+                new EnvironmentVariableSubstitutor(true)));
 
     //    IDStatusPollManager.getInstance().start();
 

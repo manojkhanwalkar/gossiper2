@@ -13,7 +13,9 @@ public class JSONUtil {
 
     static {
         mapper.registerModule(new JavaTimeModule());
-        mapper.enableDefaultTyping();
+        // Polymorphic default typing is deliberately NOT enabled: it lets a JSON payload
+        // choose arbitrary classes to instantiate (deserialization gadget RCE). All
+        // message types use concrete field types, so no type metadata is needed.
     }
 
 

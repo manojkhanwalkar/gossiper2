@@ -21,11 +21,21 @@ public class Connection {
 
 
 
+    /**
+     * TLS hostname verification is ON by default. It can only be switched off explicitly for
+     * local development (e.g. a self-signed certificate without an IP SAN) by starting the JVM
+     * with -Dgossiper.tls.insecureSkipHostnameVerification=true. Never do this in production:
+     * it allows any certificate holder to impersonate a backend service (man-in-the-middle).
+     */
+    static final String INSECURE_SKIP_HOSTNAME_VERIFICATION = "gossiper.tls.insecureSkipHostnameVerification";
+
     private void initConnectionProps()
     {
-        final Properties props = System.getProperties();
-        props.setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.TRUE.toString());
-
+        if (Boolean.getBoolean(INSECURE_SKIP_HOSTNAME_VERIFICATION)) {
+            final Properties props = System.getProperties();
+            props.setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.TRUE.toString());
+            System.err.println("WARNING: TLS hostname verification disabled via -D" + INSECURE_SKIP_HOSTNAME_VERIFICATION);
+        }
     }
 
     public Connection(String target)
